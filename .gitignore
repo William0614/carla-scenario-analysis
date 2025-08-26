@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# CARLA specific
+*.log
+*.png
+*.jpg
+*.mp4
+*.avi
+
+# Analysis outputs
+scenario_reduction_analysis.json
+ego_action_sequence.txt
+movement_analysis_actor_*.png
+detailed_movement_analysis_actor_*.png
+distance_plot.png
+
+# Temporary files
+temp/
+tmp/
+logs/
+output/
