@@ -208,15 +208,3 @@ if __name__ == "__main__":
     # Run quick analysis
     results = quick_scenario_analysis('/home/ads/ads_testing/log_files', max_files=15)
     
-    print(f"\n{'='*80}")
-    print("SCENARIO REDUCTION RECOMMENDATIONS")
-    print(f"{'='*80}")
-    print("Based on this analysis, you can reduce scenarios by:")
-    print("1. Identifying identical behavioral sequences")
-    print("2. Grouping scenarios with similar traffic complexity")
-    print("3. Clustering by duration and environmental factors")
-    print("4. Using geographic/road type clustering")
-    print("5. Combining multiple similarity dimensions for maximum reduction")
-    print("\nFor your full dataset of 174 scenarios, the reduction potential")
-    print("could be significant - potentially 30-50% reduction while maintaining")
-    print("coverage of unique driving behaviors and conditions.")
