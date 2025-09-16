@@ -6,23 +6,33 @@ A comprehensive research toolkit for analyzing CARLA simulation scenarios using 
 
 This repository implements a multi-phase research program for CARLA scenario similarity analysis, focusing on:
 - **Phase 1**: Distance-based similarity metrics with normalization methods ✅ **COMPLETED**
-- **Phase 2**: Set-based similarity metrics (Jaccard, Dice, Overlap) 🔄 **PLANNED**
+- **Phase 2**: Set-based similarity metrics (Jaccard coefficient only) ✅ **COMPLETED**
 - **Phase 3**: Sequence-based metrics (DTW, Edit Distance, LCS) 🔄 **PLANNED**
 - **Phase 4**: Machine learning and ensemble approaches 🔄 **PLANNED**
 
-## 🏆 Phase 1 Results Summary
+## 🏆 Results Summary
 
+### Phase 2: Set-Based Jaccard Similarity ✅ **UPDATED**
+**Best Performance: Jaccard Threshold = 0.5**
+- **F1-Score**: 0.598
+- **Accuracy**: 61.4%
+- **Approach**: Jaccard coefficient only (no Dice or other set metrics)
+- **Feature Sets**: 15 categorical features, avg 6.17 per scenario
+- **Similarity Rate**: 29.0% (consistent with Phase 1)
+- **Key Features**: traffic_scenario (99.4%), speed_peaks (89.7%), turning_scenario (81.0%)
+
+### Phase 1: Distance-Based Metrics ✅
 **Best Performing Combination: Z-Score + Minkowski (p=0.5)**
 - **F1-Score**: 0.644
 - **Accuracy**: 81.5%
 - **Dataset**: 174 CARLA scenarios (15,051 pairs)
 - **Redundancy Rate**: 29% similarity in ground truth
 
-### Key Findings
-- Z-Score normalization provides optimal balanced performance
-- Minkowski distance with p=0.5 outperforms traditional metrics
-- 37-dimensional feature representation effectively captures scenario characteristics
-- Threshold of 0.8 optimal for practical applications
+### Phase Comparison
+| Phase | Approach | F1-Score | Accuracy | Key Strength |
+|-------|----------|----------|----------|--------------|
+| 1 | Distance-based | **0.644** | **81.5%** | Higher precision, nuanced similarities |
+| 2 | Set-based | 0.598 | 61.4% | Interpretable features, high recall |
 
 ## 📁 Repository Structure
 
@@ -35,6 +45,13 @@ carla-scenario-analysis/
 │   ├── phase1_distance_metrics_results.json  # Complete results data
 │   ├── visualize_phase1_results.py          # Analysis and visualization
 │   └── *.png                                # Performance visualizations
+├── phase2_results/           # Phase 2 set-based analysis ✨ NEW
+│   ├── phase2_executive_summary.md          # Phase 2 executive summary
+│   ├── phase2_detailed_report.md            # Comprehensive technical report
+│   ├── phase2_changelog.md                  # Updated project changelog
+│   ├── phase2_set_based_jaccard_research_fixed.py  # Main Phase 2 script
+│   ├── phase2_jaccard_results_*.json        # Results data
+│   └── *.png                                # Phase 2 visualizations
 ├── scripts/                  # Legacy analysis tools
 ├── docs/                    # Documentation
 └── examples/               # Usage examples
@@ -42,16 +59,74 @@ carla-scenario-analysis/
 
 ## 🔬 Research Methodology
 
+### Phase 2: Set-Based Metrics ✨ **NEW**
+- **Primary Metric**: Jaccard coefficient only (|A ∩ B| / |A ∪ B|)
+- **Feature Conversion**: 37D continuous → 15 categorical feature sets
+- **Threshold Optimization**: 5 similarity thresholds tested (0.1-0.5)
+- **Key Innovation**: Domain-specific thresholds for automotive scenarios
+- **Evaluation**: Same ground truth as Phase 1 for direct comparison
+
 ### Phase 1: Distance-Based Metrics
 - **Metrics Tested**: Euclidean, Manhattan, Cosine, Minkowski (p=3, p=0.5)
 - **Normalization**: None, Min-Max, Z-Score, Robust scaling
-- **Feature Engineering**: 37-dimensional vectors (temporal, spatial, behavioral)
+- **Feature Engineering**: 37-dimensional vectors (temporal, spatial, behavioral, speed, traffic)
 - **Evaluation**: F1-score, Accuracy, Precision, Recall, Correlation analysis
 
-### Feature Categories
-1. **Temporal Features** (13 dims): Duration, velocity, acceleration patterns
-2. **Spatial Features** (15 dims): Positions, distances, trajectory characteristics  
-3. **Behavioral Features** (9 dims): Actions, interactions, route completion
+### Complete 37-Dimensional Feature Vector
+
+#### Temporal Features (6 dimensions)
+1. Duration (seconds)
+2. Frame count
+3. Speed changes count
+4. Speed change ratio
+5. Speed variability (std)
+6. Significant accelerations count
+
+#### Behavioral Features (10 dimensions)
+7. Stop events count
+8. Acceleration events count
+9. Deceleration events count
+10. Turn maneuvers count
+11. Cruise behavior count
+12. Behavior transitions count
+13. Unique behaviors count
+14. Average steering magnitude
+15. Maximum steering magnitude
+16. Total behavior events count
+
+#### Spatial Features (8 dimensions)
+17. Total path length
+18. Total displacement
+19. Path tortuosity ratio
+20. Bounding box width
+21. Bounding box height
+22. Bounding box area
+23. Direction changes count
+24. Curvature density
+
+#### Speed Features (10 dimensions)
+25. Mean speed
+26. Speed standard deviation
+27. Minimum speed
+28. Maximum speed
+29. Median speed
+30. Speed interquartile range
+31. Mean acceleration
+32. Acceleration standard deviation
+33. High speed events count
+34. Hard acceleration/deceleration count
+
+#### Traffic Features (3 dimensions)
+35. Traffic vehicle count
+36. Capped traffic complexity
+37. Traffic presence indicator
+
+### Feature Categories Summary
+- **Temporal Features** (6 dims): Duration, velocity patterns, acceleration events
+- **Behavioral Features** (10 dims): Actions, maneuvers, steering characteristics
+- **Spatial Features** (8 dims): Path geometry, displacement, curvature metrics
+- **Speed Features** (10 dims): Speed statistics, acceleration patterns, threshold events
+- **Traffic Features** (3 dims): Vehicle interactions, traffic density indicators
 
 ## 📊 Quick Start - Phase 1 Analysis
 

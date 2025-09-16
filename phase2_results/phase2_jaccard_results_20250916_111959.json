@@ -1,0 +1,1187 @@
+{
+  "experiment_info": {
+    "phase": "Phase 2: Set-Based Jaccard Similarity",
+    "timestamp": "20250916_111959",
+    "total_scenarios": 174,
+    "total_pairs": 15051,
+    "similar_pairs": 0
+  },
+  "feature_statistics": {
+    "total_unique_features": 13,
+    "average_set_size": 4.373563218390805,
+    "set_size_range": [
+      1,
+      7
+    ],
+    "feature_frequencies": {
+      "traffic_scenario": 173,
+      "sharp_maneuvers": 130,
+      "turning_scenario": 125,
+      "dynamic_speed": 93,
+      "frequent_stopping": 90,
+      "dense_traffic": 68,
+      "location_germany": 37,
+      "variable_speed": 19,
+      "location_argentina": 11,
+      "location_belgium": 7,
+      "active_steering": 5,
+      "location_china": 2,
+      "aggressive_driving": 1
+    }
+  },
+  "threshold_results": [
+    {
+      "threshold": 0.1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.0055810245166434125
+    },
+    {
+      "threshold": 0.2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.11879609328283836
+    },
+    {
+      "threshold": 0.3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.22403826988239983
+    },
+    {
+      "threshold": 0.4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.3694106703873497
+    },
+    {
+      "threshold": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.4892698159590725
+    }
+  ],
+  "best_result": {
+    "threshold": 0.1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "accuracy": 0.0055810245166434125
+  },
+  "scenario_sets": {
+    "DEU_Ibbenbueren-2_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_136_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "dynamic_speed"
+    ],
+    "ITA_Siderno-4_4_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_205_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ESP_SantBoideLlobregat-11_6_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "dense_traffic",
+      "turning_scenario",
+      "active_steering"
+    ],
+    "RUS_Bicycle-10_1_I-1-1": [
+      "frequent_stopping",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_468_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "BEL_Zaventem-2_6_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario",
+      "location_belgium"
+    ],
+    "ZAM_Tjunction-1_457_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_48_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario"
+    ],
+    "DEU_Flensburg-85_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "CHN_Cho-2_4_I-1-1": [
+      "location_china",
+      "traffic_scenario",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_439_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_94_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "dynamic_speed"
+    ],
+    "FRA_Anglet-4_6_I-1-1": [
+      "traffic_scenario",
+      "dense_traffic",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ARG_Carcarana-11_3_I-1-1": [
+      "location_argentina",
+      "traffic_scenario",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_527_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_150_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_211_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_358_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Hennigsdorf-10_6_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "aggressive_driving",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_53_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_70_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_149_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_388_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Moabit-6_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_506_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_24_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_379_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_22_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Speyer-5_2_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_201_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Ibbenbueren-12_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "DEU_Hennigsdorf-5_5_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ESP_SantBoideLlobregat-11_2_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_475_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_224_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_366_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "FRA_MoissyCramayel-1_1_I-1-1": [
+      "traffic_scenario",
+      "dense_traffic",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_377_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_249_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_291_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_121_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_21_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_424_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_501_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_190_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_502_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "RUS_Bicycle-12_1_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "variable_speed"
+    ],
+    "HRV_Pula-9_1_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "DEU_Lohmar-44_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_145_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_99_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ESP_SantBoideLlobregat-11_4_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_116_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ARG_Carcarana-1_6_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "location_argentina",
+      "dense_traffic",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_515_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Ibbenbueren-7_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ESP_SantBoideLlobregat-14_5_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "variable_speed"
+    ],
+    "ESP_Mad-2_1_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ESP_Mad-1_3_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_50_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "DEU_Flensburg-83_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_131_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_504_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Flensburg-89_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_1_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed",
+      "turning_scenario",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_161_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_147_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_499_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_471_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_83_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_159_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "ARG_Carcarana-7_1_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "location_argentina",
+      "dense_traffic",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Flensburg-42_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_64_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_9_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Guetersloh-55_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "active_steering",
+      "dense_traffic"
+    ],
+    "ITA_Siderno-8_4_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "HRV_Pula-12_2_I-1-1": [
+      "traffic_scenario",
+      "dense_traffic",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ITA_Adelfia-1_5_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_155_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ESP_Berga-4_1_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "USA_US101-13_2_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "BEL_Putte-10_1_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario",
+      "location_belgium"
+    ],
+    "ZAM_Tjunction-1_430_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "FRA_Anglet-4_1_I-1-1": [
+      "traffic_scenario",
+      "dense_traffic",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_245_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_195_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_408_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "CHN_Cho-2_7_I-1-1": [
+      "location_china",
+      "traffic_scenario",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_54_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_39_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_535_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Lohmar-52_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "DEU_Ibbenbueren-7_4_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ARG_Carcarana-1_5_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "location_argentina",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "DEU_Flensburg-73_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_525_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Stu-1_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "DEU_Speyer-1_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_265_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario"
+    ],
+    "DEU_Rheinbach-4_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "DEU_Flensburg-94_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "active_steering",
+      "dense_traffic"
+    ],
+    "DEU_Lohmar-69_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_522_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "BEL_Putte-14_1_I-1-1": [
+      "traffic_scenario",
+      "location_belgium",
+      "frequent_stopping"
+    ],
+    "ZAM_Tjunction-1_395_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_86_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ARG_Carcarana-8_3_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "location_argentina",
+      "turning_scenario",
+      "active_steering",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_142_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_466_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_357_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ARG_Carcarana-7_4_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "location_argentina",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ARG_Carcarana-1_3_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "location_argentina",
+      "dense_traffic",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_7_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_71_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_19_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_38_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_483_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "dynamic_speed"
+    ],
+    "ARG_Carcarana-3_3_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "location_argentina",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_250_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Lohmar-40_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_75_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "BEL_Nivelles-16_4_I-1-1": [
+      "traffic_scenario",
+      "location_belgium",
+      "frequent_stopping"
+    ],
+    "ZAM_Tjunction-1_127_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_139_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Hennigsdorf-5_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_488_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_124_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_444_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_101_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ARG_Carcarana-1_1_I-1-1": [
+      "location_argentina",
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario"
+    ],
+    "DEU_BadEssen-1_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "DEU_Lohmar-42_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_82_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "ESP_SantBoideLlobregat-14_1_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "DEU_Muehlhausen-7_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "active_steering",
+      "dense_traffic"
+    ],
+    "ARG_Carcarana-11_2_I-1-1": [
+      "location_argentina",
+      "traffic_scenario",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_437_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_135_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_539_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Flensburg-95_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "GRC_Perama-6_8_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "DEU_Lohmar-56_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_476_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_490_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "ZAM_Tjunction-1_481_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Stu-1_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "ESP_SantBoideLlobregat-24_2_I-1-1": [
+      "traffic_scenario",
+      "frequent_stopping"
+    ],
+    "ZAM_Tjunction-1_362_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "DEU_Guetersloh-20_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_484_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed"
+    ],
+    "DEU_Lohmar-59_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "dense_traffic"
+    ],
+    "BEL_Wervik-4_2_I-1-1": [
+      "traffic_scenario",
+      "location_belgium",
+      "frequent_stopping",
+      "dense_traffic"
+    ],
+    "BEL_Putte-7_3_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed",
+      "location_belgium"
+    ],
+    "ESP_SantBoideLlobregat-14_2_I-1-1": [
+      "traffic_scenario"
+    ],
+    "ZAM_Tjunction-1_435_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "dynamic_speed"
+    ],
+    "DEU_Stu-1_6_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "dense_traffic"
+    ],
+    "ZAM_Tjunction-1_392_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "variable_speed"
+    ],
+    "DEU_Ffb-2_2_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "HRV_Pula-30_4_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_91_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "HRV_Pula-30_5_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ARG_Carcarana-1_7_I-1-1": [
+      "traffic_scenario",
+      "location_argentina",
+      "dense_traffic",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Flensburg-28_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "frequent_stopping",
+      "dense_traffic",
+      "dynamic_speed"
+    ],
+    "DEU_Hennigsdorf-10_3_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dynamic_speed",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "ZAM_Tjunction-1_511_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "BEL_Putte-2_2_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed",
+      "location_belgium"
+    ],
+    "ZAM_Tjunction-1_520_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario"
+    ],
+    "ZAM_Tjunction-1_95_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "turning_scenario",
+      "dynamic_speed"
+    ],
+    "DEU_Flensburg-88_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "turning_scenario",
+      "dense_traffic",
+      "variable_speed"
+    ],
+    "HRV_Pula-4_2_I-1-1": [
+      "traffic_scenario",
+      "sharp_maneuvers",
+      "frequent_stopping",
+      "dense_traffic",
+      "turning_scenario"
+    ],
+    "DEU_Flensburg-43_1_I-1-1": [
+      "traffic_scenario",
+      "location_germany",
+      "dense_traffic",
+      "dynamic_speed"
+    ]
+  }
+}
