@@ -1,5 +1,56 @@
 # CHANGELOG - CARLA Scenario Analysis
 
+## [2025-09-16] Phase 2 Complete - Set-Based Similarity (Jaccard Coefficient)
+
+### 🎯 Major Achievements
+- **Completed Phase 2 research** with set-based similarity analysis using Jaccard coefficient
+- **Analyzed 174 CARLA scenarios** using categorical feature sets
+- **Achieved 62.4% F1-score** with Actions + Traffic Events combination
+- **High recall performance**: 87.4% for comprehensive similarity screening
+
+### 📊 Research Results
+- **Best Combination**: Actions + Traffic Events (F1: 0.624, Accuracy: 70.5%)
+- **Key Finding**: Simple feature combinations outperform complex ones
+- **Threshold Optimization**: 0.55 optimal for best-performing combination
+- **Categorical Feature Coverage**: Successfully extracted 8 feature types from all scenarios
+
+### 📁 New Files Added
+- `phase2_jaccard_results/` - Complete Phase 2 analysis directory
+- `PHASE2_RESULTS_REPORT.md` - Comprehensive Phase 2 analysis and comparison
+- `phase2_set_based_jaccard_research.py` - Main Phase 2 implementation
+- `phase2_jaccard_summary.json` - Detailed results for all feature combinations
+- 3 PNG visualization files (performance comparison, similarity heatmap, feature analysis)
+- 7 combination-specific result directories with detailed breakdowns
+
+### 🔬 Technical Contributions
+- **Feature Extraction Pipeline**: Robust categorical feature extraction from log files
+- **Encoding Handling**: Multi-encoding support for diverse log file formats
+- **Set-Based Analysis**: Pure Jaccard coefficient implementation without Dice/Overlap
+- **Comparative Framework**: Direct comparison with Phase 1 distance-based results
+
+### 📈 Performance Comparison: Phase 1 vs Phase 2
+| Approach | Best F1-Score | Accuracy | Precision | Recall | Strength |
+|----------|--------------|----------|-----------|--------|----------|
+| Phase 1 (Distance) | **0.644** | **81.5%** | **52.9%** | 79.3% | Overall accuracy |
+| Phase 2 (Jaccard) | 0.624 | 70.5% | 48.5% | **87.4%** | High recall screening |
+
+### 🔍 Key Insights
+- **Traffic Events are highly discriminative** for scenario similarity
+- **Feature dilution effect**: More features don't always improve performance
+- **Complementary strengths**: Phase 2 excels at comprehensive similarity screening
+- **Computational efficiency**: Set-based approach is faster than distance calculations
+
+### 🚀 Practical Applications
+- **Initial Screening**: Use Phase 2 for rapid similarity assessment (high recall)
+- **Final Selection**: Use Phase 1 for accurate redundancy removal (high precision)
+- **Hybrid Pipeline**: Two-stage approach combining both phases' strengths
+
+### 🔄 Research Progress
+- ✅ **Phase 1**: Distance-based metrics (Complete)
+- ✅ **Phase 2**: Set-based metrics (Complete)
+- 🔄 **Phase 3**: Sequence-based metrics (In progress)
+- 📋 **Phase 4**: Ensemble and ML approaches (Planned)
+
 ## [2025-09-08] Phase 1 Complete - Distance-Based Similarity Metrics
 
 ### 🎯 Major Achievements

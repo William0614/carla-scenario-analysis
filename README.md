@@ -7,12 +7,21 @@ A comprehensive research toolkit for analyzing CARLA simulation scenarios using 
 This repository implements a multi-phase research program for CARLA scenario similarity analysis, focusing on:
 - **Phase 1**: Distance-based similarity metrics with normalization methods ✅ **COMPLETED**
 - **Phase 2**: Set-based similarity metrics (Jaccard coefficient only) ✅ **COMPLETED**
-- **Phase 3**: Sequence-based metrics (DTW, Edit Distance, LCS) 🔄 **PLANNED**
+- **Phase 3**: Sequence-based metrics (N-gram Jaccard, DTW, Edit Distance, LCS) ✅ **COMPLETED**
 - **Phase 4**: Machine learning and ensemble approaches 🔄 **PLANNED**
 
 ## 🏆 Results Summary
 
-### Phase 2: Set-Based Jaccard Similarity ✅ **UPDATED**
+### Phase 3: Sequence-Based Similarity ✅ **NEW**
+**Best Performance: N-gram Jaccard Similarity (threshold=0.3)**
+- **F1-Score**: 0.702 🏆 **BEST OVERALL**
+- **Accuracy**: 81.2%
+- **Approach**: Action sequence analysis with 2-gram behavioral patterns
+- **Sequences**: 169 scenarios, avg 21.8 actions each
+- **Action Types**: 10 driving behaviors (CRUISE_FAST, BRAKE, STEER_*, etc.)
+- **Key Innovation**: Behavioral transition patterns outperform individual action analysis
+
+### Phase 2: Set-Based Jaccard Similarity ✅
 **Best Performance: Jaccard Threshold = 0.5**
 - **F1-Score**: 0.598
 - **Accuracy**: 61.4%
@@ -22,36 +31,43 @@ This repository implements a multi-phase research program for CARLA scenario sim
 - **Key Features**: traffic_scenario (99.4%), speed_peaks (89.7%), turning_scenario (81.0%)
 
 ### Phase 1: Distance-Based Metrics ✅
-**Best Performing Combination: Z-Score + Minkowski (p=0.5)**
+**Best Performance: Z-Score + Minkowski (p=0.5)**
 - **F1-Score**: 0.644
 - **Accuracy**: 81.5%
 - **Dataset**: 174 CARLA scenarios (15,051 pairs)
 - **Redundancy Rate**: 29% similarity in ground truth
 
-### Phase Comparison
+### Cross-Phase Performance Comparison
 | Phase | Approach | F1-Score | Accuracy | Key Strength |
 |-------|----------|----------|----------|--------------|
-| 1 | Distance-based | **0.644** | **81.5%** | Higher precision, nuanced similarities |
+| **3** | **Sequence-based** | **🏆 0.702** | **81.2%** | **Behavioral pattern recognition** |
+| 1 | Distance-based | 0.644 | 81.5% | High precision, nuanced similarities |
 | 2 | Set-based | 0.598 | 61.4% | Interpretable features, high recall |
 
 ## 📁 Repository Structure
 
 ```
 carla-scenario-analysis/
-├── phase1_results/           # Phase 1 complete analysis and results
+├── phase1_results/           # Phase 1 distance-based analysis
 │   ├── METHODOLOGY_AND_RESULTS_REPORT.md    # Comprehensive methodology
 │   ├── PHASE1_COMPLETE_REPORT.md            # Executive summary
 │   ├── phase1_distance_metrics_research.py   # Main experiment script
 │   ├── phase1_distance_metrics_results.json  # Complete results data
 │   ├── visualize_phase1_results.py          # Analysis and visualization
 │   └── *.png                                # Performance visualizations
-├── phase2_results/           # Phase 2 set-based analysis ✨ NEW
+├── phase2_results/           # Phase 2 set-based analysis
 │   ├── phase2_executive_summary.md          # Phase 2 executive summary
 │   ├── phase2_detailed_report.md            # Comprehensive technical report
 │   ├── phase2_changelog.md                  # Updated project changelog
 │   ├── phase2_set_based_jaccard_research_fixed.py  # Main Phase 2 script
 │   ├── phase2_jaccard_results_*.json        # Results data
 │   └── *.png                                # Phase 2 visualizations
+├── phase3_results/           # Phase 3 sequence-based analysis ✨ NEW
+│   ├── PHASE3_COMPLETE_REPORT.md            # Comprehensive Phase 3 report
+│   ├── phase3_executive_summary.md          # Executive summary
+│   ├── phase3_sequence_based_research.py    # Main Phase 3 script
+│   ├── phase3_sequence_results_*.json       # Results data
+│   └── phase3_sequence_analysis_*.png       # Performance visualizations
 ├── scripts/                  # Legacy analysis tools
 ├── docs/                    # Documentation
 └── examples/               # Usage examples
@@ -59,7 +75,15 @@ carla-scenario-analysis/
 
 ## 🔬 Research Methodology
 
-### Phase 2: Set-Based Metrics ✨ **NEW**
+### Phase 3: Sequence-Based Metrics ✨ **NEW**
+- **Action Extraction**: Frame-by-frame vehicle control analysis from CARLA logs
+- **Action Types**: 10 driving behaviors (STOP, CRUISE_FAST, BRAKE, STEER_*, TURN_*, etc.)
+- **Sequence Processing**: Consecutive duplicate removal, avg length 21.8 actions
+- **Metrics Tested**: Edit Distance, LCS, DTW, N-gram Jaccard, Global Alignment
+- **Key Innovation**: N-gram (2-gram) behavioral pattern analysis
+- **Success Factor**: Action transitions capture driving behavior better than individual actions
+
+### Phase 2: Set-Based Metrics
 - **Primary Metric**: Jaccard coefficient only (|A ∩ B| / |A ∪ B|)
 - **Feature Conversion**: 37D continuous → 15 categorical feature sets
 - **Threshold Optimization**: 5 similarity thresholds tested (0.1-0.5)
