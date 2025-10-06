@@ -1,13 +1,26 @@
-# CARLA Scenario Analysis Tools
+# Multi-Dimensional CARLA Scenario Similarity Analysis
 
-A comprehensive research toolkit for analyzing CARLA simulation scenarios using advanced similarity metrics to identify redundancies and optimize testing databases.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![CARLA](https://img.shields.io/badge/CARLA-0.9.15-orange.svg)](https://carla.org/)
 
-## 🎯 Project Overview
+A comprehensive research toolkit for analyzing CARLA simulation scenarios with **multi-dimensional ground truth methodology** that addresses critical limitations of filename-based similarity assessment.
 
-This repository implements a multi-phase research program for CARLA scenario similarity analysis, focusing on:
+## 🚀 Key Innovation
+
+**Multi-Dimensional Ground Truth**: Instead of relying on filename patterns, our approach combines:
+- **Behavioral Similarity (40%)** - LCS-optimized action sequence analysis 
+- **Spatial Similarity (30%)** - Path geometry with distance-based scoring
+- **Traffic Similarity (20%)** - Vehicle density with percentage-based tiers  
+- **Contextual Similarity (10%)** - Geographic and scenario classification
+
+**Research Breakthrough**: LCS (F1=0.671) outperforms N-gram Jaccard (F1=0.556) when evaluated against multi-dimensional ground truth, despite N-gram Jaccard being best vs filename-based ground truth (F1=0.702).
+
+## 📊 Project Phases
+
 - **Phase 1**: Distance-based similarity metrics with normalization methods ✅ **COMPLETED**
-- **Phase 2**: Set-based similarity metrics (Jaccard coefficient only) ✅ **COMPLETED**
+- **Phase 2**: Set-based similarity metrics (Jaccard coefficient only) ✅ **COMPLETED**  
 - **Phase 3**: Sequence-based metrics (N-gram Jaccard, DTW, Edit Distance, LCS) ✅ **COMPLETED**
+- **🌟 Multi-Dimensional GT**: Comprehensive ground truth with LCS optimization ✅ **COMPLETED**
 - **Phase 4**: Machine learning and ensemble approaches 🔄 **PLANNED**
 
 ## 🏆 Results Summary
