@@ -1,10 +1,10 @@
 # 🧬 Feature Extraction Methodology
 
-This document provides comprehensive details on the 32-dimensional feature extraction process used in our CARLA scenario similarity analysis framework.
+This document provides details on the 32-dimensional feature extraction process used in our CARLA scenario similarity analysis framework.
 
 ## 📋 Overview
 
-Our streamlined feature extraction methodology captures essential characteristics of driving scenarios through five well-defined feature categories:
+Feature extraction methodology captures essential characteristics of driving scenarios through five feature categories:
 
 - **Temporal Features (4 dimensions)**: Time-based patterns and event rates
 - **Motion Features (8 dimensions)**: Speed, acceleration, and dynamics with unified thresholds
@@ -12,11 +12,7 @@ Our streamlined feature extraction methodology captures essential characteristic
 - **Spatial Features (8 dimensions)**: Geographic and geometric characteristics
 - **Context Features (4 dimensions)**: Traffic and environmental context
 
-Each feature is carefully engineered with clear conceptual boundaries, eliminating redundancy and overlap found in previous versions.
-
-## 🎯 Feature Selection Philosophy
-
-The 32 dimensions were chosen based on the following principles:
+## 🎯 Feature Selection Rationale
 
 1. **Completeness**: Cover all major aspects of driving scenarios
 2. **Discriminability**: Provide sufficient granularity to distinguish between scenarios
@@ -28,7 +24,7 @@ The 32 dimensions were chosen based on the following principles:
 
 ### 1. Temporal Features (4 Dimensions)
 
-These features capture pure time-based characteristics of driving scenarios, focusing on temporal patterns and event rates without overlapping with motion analysis.
+These features capture pure time-based characteristics of driving scenarios, focusing on temporal patterns and event rates.
 
 #### **1.1 Duration (Seconds)**
 - **Extraction Method**: `duration = frame_count * 0.05` (assuming 20 FPS)
@@ -108,7 +104,7 @@ These features characterize speed, acceleration, and vehicle dynamics using unif
 
 ### 3. Behavioral Features (8 Dimensions)
 
-These features characterize the driving behaviors exhibited during scenarios, focusing on maneuver patterns without redundant counts.
+These features characterize the driving behaviors exhibited during scenarios, focusing on maneuver patterns.
 
 #### **3.1 Stop Events Count**
 - **Extraction Method**: Count frames where speed < 0.1 m/s for >1 second
@@ -291,8 +287,7 @@ These features characterize the environmental context and scenario complexity, p
 ## 📊 Performance Impact
 
 ### Computational Efficiency
-- **Extraction Time**: ~0.1 seconds per scenario log file
-- **Memory Usage**: ~32 floats (128 bytes) per scenario
+- **Extraction Time**: ~0.5 seconds per scenario log file
 - **Scalability**: Linear scaling with dataset size
 
 ### Similarity Quality
@@ -314,5 +309,3 @@ These features characterize the environmental context and scenario complexity, p
 - **Multi-scale analysis**: Features at different temporal resolutions
 
 ---
-
-**Note**: This streamlined feature extraction methodology eliminates redundancy while maintaining comprehensive scenario representation. The 32-dimensional feature vector provides improved clarity and efficiency compared to the previous 37-dimensional version, with better conceptual organization and no overlapping features.
