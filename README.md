@@ -3,13 +3,6 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![CARLA](https://img.shields.io/badge/CARLA-0.9.15-orange.svg)](https://carla.org/)
 
-**Production-Ready Framework for CARLA Scenario Redundancy Detection and Multi-Dimensional Similarity Analysis**
-
-## 🎯 Project Status: COMPLETE & PRODUCTION READY ✅
-
-**Version**: 1.2.0  
-**Last Updated**: October 14, 2025  
-**Status**: Clean, Refactored, Production Ready  
 
 ---
 
@@ -52,7 +45,7 @@ carla-scenario-analysis/
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/William0614/carla-scenario-analysis.git
    cd carla-scenario-analysis
    ```
 
@@ -115,8 +108,6 @@ results = evaluator.evaluate_all_metrics(features, multi_pairs)
 
 ## 📊 Feature Extraction (32 Dimensions)
 
-Our framework extracts a streamlined 32-dimensional feature vector from each CARLA scenario log, carefully engineered to capture all essential aspects of driving scenarios without redundancy or conceptual overlap.
-
 ### Temporal Features (4D)
 - **Duration**: Total scenario time length
 - **Frame Count**: Recording resolution indicator  
@@ -164,7 +155,6 @@ Our framework extracts a streamlined 32-dimensional feature vector from each CAR
 ### Ground Truth Impact
 - **Multi-dimensional GT**: More realistic similarity assessment
 - **Basic GT**: Simpler filename-based matching
-- **Performance varies** significantly between ground truth methodologies
 
 ---
 
@@ -189,10 +179,8 @@ Comprehensive framework for validating similarity metric performance.
 
 ## 🔬 Research Background
 
-This framework represents the culmination of a multi-phase research project:
-
 - **Phase 1**: Distance-based similarity metrics with normalization
-- **Phase 2**: Set-based similarity analysis (Jaccard focus)  
+- **Phase 2**: Set-based similarity analysis
 - **Phase 3**: Sequence-based metrics optimization
 - **Integration**: Multi-dimensional ground truth validation
 
@@ -244,19 +232,3 @@ python examples/example_usage.py
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
-
-## 🤝 Acknowledgments
-
-- CARLA Simulator team for the autonomous driving platform
-- Research community for similarity analysis methodologies
-- Contributors to the multi-dimensional ground truth framework
-
----
-
-## 📞 Contact
-
-For questions, issues, or contributions, please open a GitHub issue or contact the development team.
-
----
-
-**🎯 Ready for Production**: This framework provides a complete, validated solution for CARLA scenario similarity analysis with clean architecture and comprehensive documentation.
