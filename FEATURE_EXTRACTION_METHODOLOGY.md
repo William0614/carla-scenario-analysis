@@ -214,29 +214,29 @@ These features provide detailed statistical analysis of speed patterns, crucial 
 - **Range**: 1-10 m/s
 - **Similarity Rationale**: Similar IQR indicates comparable speed distribution patterns
 
-#### **4.7 Speed 10th Percentile**
-- **Extraction Method**: `np.percentile(speed_values, 10)`
-- **Why Important**: Characterizes lower speed behavior (congestion, stops)
-- **Range**: 0-8 m/s
-- **Similarity Rationale**: Similar low-end speeds indicate comparable congestion levels
+#### **4.7 Mean Acceleration**
+- **Extraction Method**: `np.mean(acceleration_values)`
+- **Why Important**: Characterizes typical acceleration/deceleration patterns
+- **Range**: -2.0 to +2.0 m/s² typical range
+- **Similarity Rationale**: Similar acceleration patterns indicate comparable driving aggressiveness
 
-#### **4.8 Speed 25th Percentile**
-- **Extraction Method**: `np.percentile(speed_values, 25)`
-- **Why Important**: Lower-middle range speed behavior
-- **Range**: 1-12 m/s
-- **Similarity Rationale**: Similar quartile patterns indicate comparable traffic flow characteristics
+#### **4.8 Acceleration Standard Deviation**
+- **Extraction Method**: `np.std(acceleration_values)`
+- **Why Important**: Measures variability in acceleration patterns
+- **Range**: 0.5-4.0 m/s² standard deviation
+- **Similarity Rationale**: Similar acceleration variability indicates comparable driving smoothness
 
-#### **4.9 Speed 75th Percentile**
-- **Extraction Method**: `np.percentile(speed_values, 75)`
-- **Why Important**: Higher-middle range speed behavior
-- **Range**: 5-25 m/s
-- **Similarity Rationale**: Similar upper quartile speeds suggest comparable free-flow conditions
+#### **4.9 High Speed Events Count**
+- **Extraction Method**: `len([s for s in speeds if s > 10])` (count of speeds > 10 m/s)
+- **Why Important**: Identifies highway driving or high-speed segments
+- **Range**: 0-1000+ events depending on scenario type
+- **Similarity Rationale**: Similar high-speed event counts indicate comparable road types (highway vs urban)
 
-#### **4.10 Speed 90th Percentile**
-- **Extraction Method**: `np.percentile(speed_values, 90)`
-- **Why Important**: Characterizes higher speed behavior (highway, free flow)
-- **Range**: 8-30 m/s
-- **Similarity Rationale**: Similar high-end speeds indicate comparable maximum traffic conditions
+#### **4.10 Hard Acceleration/Deceleration Count**
+- **Extraction Method**: `len([a for a in accelerations if abs(a) > 3])` (count of |acceleration| > 3 m/s²)
+- **Why Important**: Identifies emergency braking, aggressive acceleration, or abrupt maneuvers
+- **Range**: 0-50+ events depending on scenario complexity
+- **Similarity Rationale**: Similar hard acceleration counts indicate comparable driving aggressiveness or emergency situations
 
 ### 5. Traffic Features (3 Dimensions)
 

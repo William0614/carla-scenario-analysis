@@ -145,9 +145,9 @@ Our framework extracts a comprehensive 37-dimensional feature vector from each C
 
 ### Speed Features (10D)
 - **Statistical Measures**: Min, max, mean, median, standard deviation
-- **Distribution Analysis**: Interquartile range for robustness
-- **Percentile Analysis**: 10th, 25th, 75th, 90th percentiles
-- **Traffic Condition Indicators**: From congestion to free-flow patterns
+- **Distribution Analysis**: Interquartile range (75th - 25th percentile) for robustness  
+- **Acceleration Analysis**: Mean and standard deviation of acceleration values
+- **Event Detection**: High speed events (>10 m/s) and hard acceleration/deceleration (>3 m/s²)
 
 ### Traffic Features (3D)
 - **Vehicle Count**: Traffic density measure
