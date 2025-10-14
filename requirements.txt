@@ -1,5 +1,5 @@
-matplotlib>=3.0.0
-numpy>=1.16.0
-carla>=0.9.10
+matplotlib
+numpy
+carla
 # Note: CARLA Python API must be installed separately from CARLA distribution
 # scenario_runner must be cloned and set up separately
