@@ -1,14 +1,22 @@
-# 37-Dimensional Feature Extraction Methodology
+# 🧬 Feature Extraction Methodology
 
-**Comprehensive Guide to CARLA Scenario Feature Engineering**
+This document provides comprehensive details on the 32-dimensional feature extraction process used in our CARLA scenario similarity analysis framework.
 
-## 📊 Overview
+## 📋 Overview
 
-This document provides a detailed explanation of the 37-dimensional feature vector used in the CARLA Scenario Similarity Analysis Framework. These features were carefully selected and engineered to capture the essential characteristics of autonomous driving scenarios for similarity analysis and redundancy detection.
+Our streamlined feature extraction methodology captures essential characteristics of driving scenarios through five well-defined feature categories:
+
+- **Temporal Features (4 dimensions)**: Time-based patterns and event rates
+- **Motion Features (8 dimensions)**: Speed, acceleration, and dynamics with unified thresholds
+- **Behavioral Features (8 dimensions)**: Driving patterns and maneuvers  
+- **Spatial Features (8 dimensions)**: Geographic and geometric characteristics
+- **Context Features (4 dimensions)**: Traffic and environmental context
+
+Each feature is carefully engineered with clear conceptual boundaries, eliminating redundancy and overlap found in previous versions.
 
 ## 🎯 Feature Selection Philosophy
 
-The 37 dimensions were chosen based on the following principles:
+The 32 dimensions were chosen based on the following principles:
 
 1. **Completeness**: Cover all major aspects of driving scenarios
 2. **Discriminability**: Provide sufficient granularity to distinguish between scenarios
@@ -18,15 +26,15 @@ The 37 dimensions were chosen based on the following principles:
 
 ## 🔬 Feature Categories and Detailed Explanation
 
-### 1. Temporal Features (6 Dimensions)
+### 1. Temporal Features (4 Dimensions)
 
-These features capture the time-based characteristics of scenarios, essential for understanding scenario duration and timing patterns.
+These features capture pure time-based characteristics of driving scenarios, focusing on temporal patterns and event rates without overlapping with motion analysis.
 
-#### **1.1 Duration (seconds)**
-- **Extraction Method**: `total_time = max_timestamp - min_timestamp`
-- **Why Important**: Scenarios with similar durations often represent similar complexity levels
-- **Range**: Typically 20-300 seconds for CARLA scenarios
-- **Similarity Rationale**: Similar duration scenarios likely have comparable event density
+#### **1.1 Duration (Seconds)**
+- **Extraction Method**: `duration = frame_count * 0.05` (assuming 20 FPS)
+- **Why Important**: Fundamental scenario characteristic affecting all other metrics
+- **Range**: 5-300 seconds depending on scenario type
+- **Similarity Rationale**: Similar durations indicate comparable scenario scope and complexity
 
 #### **1.2 Frame Count**
 - **Extraction Method**: `frame_count = len(recorded_frames)`
@@ -34,35 +42,75 @@ These features capture the time-based characteristics of scenarios, essential fo
 - **Range**: Varies based on recording frequency (typically 100-3000 frames)
 - **Similarity Rationale**: Similar frame counts suggest similar recording conditions
 
-#### **1.3 Speed Changes Count**
-- **Extraction Method**: Count velocity magnitude changes exceeding threshold (0.5 m/s)
-- **Why Important**: Measures scenario dynamism and complexity
-- **Range**: 0-200+ changes depending on scenario complexity
-- **Similarity Rationale**: Scenarios with similar speed change patterns indicate comparable driving complexity
+#### **1.3 Event Frequency (Events per Second)**
+- **Extraction Method**: `(speed_changes + significant_accelerations) / duration`
+- **Why Important**: Normalizes scenario dynamism by time, unified event detection
+- **Range**: 0.1-5.0 events per second
+- **Similarity Rationale**: Similar event rates indicate comparable temporal dynamics
 
-#### **1.4 Speed Change Ratio**
-- **Extraction Method**: `speed_changes / duration`
-- **Why Important**: Normalizes dynamism by scenario length
-- **Range**: 0.1-5.0 changes per second
-- **Similarity Rationale**: Indicates consistent event density across different scenario durations
+#### **1.4 Temporal Density (Events per Frame)**
+- **Extraction Method**: `total_dynamic_events / frame_count`
+- **Why Important**: Measures event concentration relative to recording resolution
+- **Range**: 0.01-0.5 events per frame
+- **Similarity Rationale**: Similar density indicates comparable recording detail and scenario richness
 
-#### **1.5 Speed Variability (Standard Deviation)**
+### 2. Motion Features (8 Dimensions)
+
+These features characterize speed, acceleration, and vehicle dynamics using unified thresholds and statistical measures without redundancy.
+
+#### **2.1 Mean Speed**
+- **Extraction Method**: `np.mean(speed_values)`
+- **Why Important**: Primary indicator of scenario velocity profile
+- **Range**: 1-30 m/s depending on scenario type (urban vs highway)
+- **Similarity Rationale**: Similar mean speeds suggest comparable traffic conditions
+
+#### **2.2 Speed Standard Deviation**
 - **Extraction Method**: `np.std(speed_values)`
-- **Why Important**: Captures consistency vs. variability in vehicle behavior
+- **Why Important**: Measures speed consistency vs. variability
 - **Range**: 0.5-8.0 m/s standard deviation
 - **Similarity Rationale**: Similar variability indicates similar driving style consistency
 
-#### **1.6 Significant Accelerations Count**
-- **Extraction Method**: Count acceleration changes exceeding ±2.0 m/s²
-- **Why Important**: Identifies emergency or aggressive maneuvers
-- **Range**: 0-50 significant accelerations
-- **Similarity Rationale**: Similar acceleration patterns indicate comparable driving aggressiveness
+#### **2.3 Minimum Speed**
+- **Extraction Method**: `np.min(speed_values)`
+- **Why Important**: Identifies lowest speed points (stops, congestion)
+- **Range**: 0-10 m/s
+- **Similarity Rationale**: Similar minimums indicate comparable traffic constraints
 
-### 2. Behavioral Features (10 Dimensions)
+#### **2.4 Maximum Speed**
+- **Extraction Method**: `np.max(speed_values)`
+- **Why Important**: Identifies peak speeds and speed limits
+- **Range**: 5-50 m/s depending on road type
+- **Similarity Rationale**: Similar maximums suggest comparable road types
 
-These features characterize the driving behaviors exhibited during scenarios, crucial for understanding driving patterns and maneuver types.
+#### **2.5 Speed Range**
+- **Extraction Method**: `max_speed - min_speed`
+- **Why Important**: More interpretable than IQR, captures full speed variation
+- **Range**: 2-40 m/s
+- **Similarity Rationale**: Similar ranges indicate comparable speed dynamics
 
-#### **2.1 Stop Events Count**
+#### **2.6 Mean Acceleration**
+- **Extraction Method**: `np.mean(acceleration_values)`
+- **Why Important**: Indicates average acceleration tendency
+- **Range**: -1 to +1 m/s² (near zero for normal driving)
+- **Similarity Rationale**: Similar acceleration patterns suggest comparable driving aggressiveness
+
+#### **2.7 Acceleration Standard Deviation**
+- **Extraction Method**: `np.std(acceleration_values)`
+- **Why Important**: Measures acceleration smoothness vs. jerkiness
+- **Range**: 0.5-3.0 m/s²
+- **Similarity Rationale**: Similar acceleration variability indicates comparable driving smoothness
+
+#### **2.8 Dynamic Events Count**
+- **Extraction Method**: Count accelerations exceeding ±2.5 m/s² (unified threshold)
+- **Why Important**: Identifies significant dynamic maneuvers with consistent threshold
+- **Range**: 0-50 dynamic events
+- **Similarity Rationale**: Similar event counts indicate comparable maneuver intensity
+
+### 3. Behavioral Features (8 Dimensions)
+
+These features characterize the driving behaviors exhibited during scenarios, focusing on maneuver patterns without redundant counts.
+
+#### **3.1 Stop Events Count**
 - **Extraction Method**: Count frames where speed < 0.1 m/s for >1 second
 - **Why Important**: Identifies traffic light stops, intersections, traffic jams
 - **Range**: 0-20 stops per scenario
@@ -74,55 +122,49 @@ These features characterize the driving behaviors exhibited during scenarios, cr
 - **Range**: 0-30 acceleration events
 - **Similarity Rationale**: Similar acceleration patterns suggest comparable driving contexts
 
-#### **2.3 Deceleration Events Count**
+#### **3.2 Acceleration Events Count**  
+- **Extraction Method**: Count sustained acceleration >1.5 m/s² for >0.5s
+- **Why Important**: Indicates merging, overtaking, or startup behaviors
+- **Range**: 0-30 acceleration events
+- **Similarity Rationale**: Similar acceleration patterns suggest comparable driving contexts
+
+#### **3.3 Deceleration Events Count**
 - **Extraction Method**: Count sustained deceleration <-1.5 m/s² for >0.5s  
 - **Why Important**: Captures braking behaviors, traffic responses
 - **Range**: 0-25 deceleration events
 - **Similarity Rationale**: Similar braking patterns indicate comparable traffic density
 
-#### **2.4 Turn Maneuvers Count**
+#### **3.4 Turn Maneuvers Count**
 - **Extraction Method**: Count steering angle changes exceeding ±15° sustained >1s
 - **Why Important**: Identifies lane changes, turns, navigation complexity
 - **Range**: 0-50 turn maneuvers
 - **Similarity Rationale**: Similar turn counts suggest comparable route complexity
 
-#### **2.5 Cruise Behavior Count**
+#### **3.5 Cruise Behavior Count**
 - **Extraction Method**: Count sustained constant speed (±0.5 m/s) periods >3s
 - **Why Important**: Indicates highway driving or steady traffic flow
 - **Range**: 0-15 cruise periods  
 - **Similarity Rationale**: Similar cruise patterns suggest comparable traffic flow conditions
 
-#### **2.6 Behavior Transitions Count**
+#### **3.6 Behavior Transitions Count**
 - **Extraction Method**: Count changes between behavioral states (stop→cruise, cruise→turn, etc.)
 - **Why Important**: Measures scenario complexity and driving pattern diversity
 - **Range**: 5-100 transitions
 - **Similarity Rationale**: Similar transition counts indicate comparable scenario complexity
 
-#### **2.7 Unique Behaviors Count**
-- **Extraction Method**: Count distinct behavior types observed (max 10 types)
-- **Why Important**: Indicates scenario diversity and completeness
-- **Range**: 1-10 unique behaviors
-- **Similarity Rationale**: Similar behavior diversity suggests comparable scenario richness
-
-#### **2.8 Average Steering Magnitude**
+#### **3.7 Average Steering Magnitude**
 - **Extraction Method**: `np.mean(np.abs(steering_angles))`
 - **Why Important**: Characterizes typical steering intensity
 - **Range**: 0.1-0.8 radians average
 - **Similarity Rationale**: Similar steering patterns indicate comparable route geometry
 
-#### **2.9 Maximum Steering Magnitude**
+#### **3.8 Maximum Steering Magnitude**
 - **Extraction Method**: `np.max(np.abs(steering_angles))`
 - **Why Important**: Identifies sharp turns or emergency maneuvers
 - **Range**: 0.2-1.2 radians maximum
 - **Similarity Rationale**: Similar maximum steering suggests comparable maneuver difficulty
 
-#### **2.10 Total Behavior Events Count**
-- **Extraction Method**: Sum of all detected behavior events
-- **Why Important**: Overall measure of scenario activity level
-- **Range**: 10-200 total events
-- **Similarity Rationale**: Similar event totals indicate comparable overall scenario activity
-
-### 3. Spatial Features (8 Dimensions)
+### 4. Spatial Features (8 Dimensions)
 
 These features capture the geometric and spatial characteristics of vehicle trajectories, essential for understanding route complexity and spatial patterns.
 
@@ -174,91 +216,33 @@ These features capture the geometric and spatial characteristics of vehicle traj
 - **Range**: 0.001-0.1 changes per meter
 - **Similarity Rationale**: Similar curvature density indicates comparable route geometry complexity
 
-### 4. Speed Features (10 Dimensions)
+### 5. Context Features (4 Dimensions)
 
-These features provide detailed statistical analysis of speed patterns, crucial for understanding traffic conditions and driving dynamics.
+These features characterize the environmental context and scenario complexity, providing essential background information without redundancy.
 
-#### **4.1 Mean Speed**
-- **Extraction Method**: `np.mean(speed_values)`
-- **Why Important**: Central tendency of speed distribution
-- **Range**: 1-25 m/s (typical urban/highway speeds)
-- **Similarity Rationale**: Similar average speeds suggest comparable traffic conditions
-
-#### **4.2 Speed Standard Deviation**
-- **Extraction Method**: `np.std(speed_values)`
-- **Why Important**: Variability in speed patterns
-- **Range**: 0.5-8.0 m/s
-- **Similarity Rationale**: Similar speed variability indicates comparable traffic flow consistency
-
-#### **4.3 Minimum Speed**
-- **Extraction Method**: `np.min(speed_values)`
-- **Why Important**: Identifies stops or slowest conditions
-- **Range**: 0-5 m/s
-- **Similarity Rationale**: Similar minimum speeds suggest comparable traffic congestion
-
-#### **4.4 Maximum Speed**
-- **Extraction Method**: `np.max(speed_values)`
-- **Why Important**: Peak speed capabilities and road type indicators
-- **Range**: 5-35 m/s  
-- **Similarity Rationale**: Similar maximum speeds indicate comparable road types (urban vs highway)
-
-#### **4.5 Median Speed**
-- **Extraction Method**: `np.median(speed_values)`
-- **Why Important**: Robust central tendency less affected by outliers
-- **Range**: 1-20 m/s
-- **Similarity Rationale**: Similar median speeds indicate comparable typical driving conditions
-
-#### **4.6 Speed Interquartile Range (IQR)**
-- **Extraction Method**: `np.percentile(speeds, 75) - np.percentile(speeds, 25)`
-- **Why Important**: Robust measure of speed distribution spread
-- **Range**: 1-10 m/s
-- **Similarity Rationale**: Similar IQR indicates comparable speed distribution patterns
-
-#### **4.7 Mean Acceleration**
-- **Extraction Method**: `np.mean(acceleration_values)`
-- **Why Important**: Characterizes typical acceleration/deceleration patterns
-- **Range**: -2.0 to +2.0 m/s² typical range
-- **Similarity Rationale**: Similar acceleration patterns indicate comparable driving aggressiveness
-
-#### **4.8 Acceleration Standard Deviation**
-- **Extraction Method**: `np.std(acceleration_values)`
-- **Why Important**: Measures variability in acceleration patterns
-- **Range**: 0.5-4.0 m/s² standard deviation
-- **Similarity Rationale**: Similar acceleration variability indicates comparable driving smoothness
-
-#### **4.9 High Speed Events Count**
-- **Extraction Method**: `len([s for s in speeds if s > 10])` (count of speeds > 10 m/s)
-- **Why Important**: Identifies highway driving or high-speed segments
-- **Range**: 0-1000+ events depending on scenario type
-- **Similarity Rationale**: Similar high-speed event counts indicate comparable road types (highway vs urban)
-
-#### **4.10 Hard Acceleration/Deceleration Count**
-- **Extraction Method**: `len([a for a in accelerations if abs(a) > 3])` (count of |acceleration| > 3 m/s²)
-- **Why Important**: Identifies emergency braking, aggressive acceleration, or abrupt maneuvers
-- **Range**: 0-50+ events depending on scenario complexity
-- **Similarity Rationale**: Similar hard acceleration counts indicate comparable driving aggressiveness or emergency situations
-
-### 5. Traffic Features (3 Dimensions)
-
-These features characterize the traffic environment and vehicle interactions, essential for understanding scenario context and complexity.
-
-#### **5.1 Traffic Vehicle Count**
+#### **5.1 Traffic Count**
 - **Extraction Method**: Count unique non-ego vehicles detected in scenario
-- **Why Important**: Measures traffic density and interaction complexity
+- **Why Important**: Direct measure of traffic density and interaction complexity
 - **Range**: 0-50 vehicles
 - **Similarity Rationale**: Similar vehicle counts suggest comparable traffic density levels
 
-#### **5.2 Capped Traffic Complexity**
-- **Extraction Method**: Complex interaction analysis capped at maximum threshold
-- **Why Important**: Prevents outlier scenarios from dominating similarity calculations
-- **Range**: 0-100 complexity score
-- **Similarity Rationale**: Similar complexity scores indicate comparable interaction difficulty
+#### **5.2 Traffic Density**
+- **Extraction Method**: `traffic_count / spatial_bounding_box_area`
+- **Why Important**: Normalized density measure independent of spatial scale
+- **Range**: 0-1.0 vehicles per square meter
+- **Similarity Rationale**: Similar density indicates comparable crowding independent of area
 
 #### **5.3 Traffic Presence Indicator**
 - **Extraction Method**: Binary indicator (1 if traffic_count > 0, else 0)
 - **Why Important**: Simple distinction between isolated vs. multi-vehicle scenarios
 - **Range**: 0 (isolated) or 1 (traffic present)
 - **Similarity Rationale**: Fundamental categorization for scenario types
+
+#### **5.4 Scenario Complexity Score**
+- **Extraction Method**: Combined score from traffic count and spatial complexity
+- **Why Important**: Holistic measure of overall scenario difficulty
+- **Range**: 0-10 complexity units
+- **Similarity Rationale**: Similar complexity scores indicate comparable overall scenario difficulty
 
 ## 🧮 Feature Engineering Principles
 
@@ -308,7 +292,7 @@ These features characterize the traffic environment and vehicle interactions, es
 
 ### Computational Efficiency
 - **Extraction Time**: ~0.1 seconds per scenario log file
-- **Memory Usage**: ~37 floats (148 bytes) per scenario
+- **Memory Usage**: ~32 floats (128 bytes) per scenario
 - **Scalability**: Linear scaling with dataset size
 
 ### Similarity Quality
@@ -331,4 +315,4 @@ These features characterize the traffic environment and vehicle interactions, es
 
 ---
 
-**Note**: This feature extraction methodology represents a balance between computational efficiency, interpretability, and discriminative power. The 37-dimensional feature vector provides a comprehensive yet manageable representation of CARLA driving scenarios suitable for large-scale similarity analysis and scenario optimization applications.
+**Note**: This streamlined feature extraction methodology eliminates redundancy while maintaining comprehensive scenario representation. The 32-dimensional feature vector provides improved clarity and efficiency compared to the previous 37-dimensional version, with better conceptual organization and no overlapping features.

@@ -14,7 +14,7 @@ from difflib import SequenceMatcher
 
 class DistanceBasedMetrics:
     """
-    Distance-based similarity metrics for 37-dimensional feature vectors.
+    Distance-based similarity metrics for 32-dimensional feature vectors.
     Best performer: Cosine Similarity with Z-score normalization.
     """
     

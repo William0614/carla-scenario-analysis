@@ -27,8 +27,8 @@ except ImportError as e:
 
 
 def extract_features_command(args):
-    """Extract 37-dimensional features from log files."""
-    print("🔍 Extracting 37-dimensional features from CARLA log files...")
+    """Extract 32-dimensional features from log files."""
+    print("🔍 Extracting 32-dimensional features from CARLA log files...")
     
     extractor = FeatureExtractor()
     features = extractor.extract_features_from_logs(args.log_directory)
@@ -189,7 +189,7 @@ Examples:
     
     # Extract features command
     extract_parser = subparsers.add_parser('extract-features', 
-                                         help='Extract 37-dimensional features from log files')
+                                         help='Extract 32-dimensional features from log files')
     extract_parser.add_argument('log_directory', help='Directory containing CARLA log files')
     
     # Basic ground truth command

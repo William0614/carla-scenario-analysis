@@ -2,7 +2,7 @@
 """
 Feature Extraction Module for CARLA Scenario Analysis
 
-Extracts 37-dimensional feature vectors from CARLA log files for similarity analysis.
+Extracts 32-dimensional feature vectors from CARLA log files for similarity analysis.
 """
 
 import os
@@ -20,14 +20,14 @@ from srunner.metrics.tools.metrics_log import MetricsLog
 
 class FeatureExtractor:
     """
-    Comprehensive 37-dimensional feature extraction from CARLA scenario logs.
+    Comprehensive 32-dimensional feature extraction from CARLA scenario logs.
     
     Feature Categories:
-    - Temporal Features (6 dimensions): Duration, frame count, speed patterns
-    - Behavioral Features (10 dimensions): Actions, maneuvers, steering patterns  
-    - Spatial Features (8 dimensions): Path geometry, displacement, curvature
-    - Speed Features (10 dimensions): Speed statistics, acceleration patterns
-    - Traffic Features (3 dimensions): Vehicle interactions, traffic density
+        - Temporal Features (4 dimensions): Duration, timing patterns  
+    - Motion Features (8 dimensions): Speed, acceleration, and dynamics
+    - Behavioral Features (8 dimensions): Driving patterns, maneuvers
+    - Spatial Features (8 dimensions): Geographic movement, trajectories
+    - Context Features (4 dimensions): Traffic and environmental context
     """
     
     def __init__(self, carla_host='localhost', carla_port=2000):
@@ -37,14 +37,14 @@ class FeatureExtractor:
     
     def extract_features(self, log_file):
         """
-        Extract comprehensive 37-dimensional feature vector from a log file.
+        Extract comprehensive 32-dimensional feature vector from a log file.
         
         Args:
             log_file (str): Path to the CARLA log file
             
         Returns:
-            dict: Feature dictionary with temporal, behavioral, spatial, speed, 
-                  traffic features and combined 37-dimensional vector
+            dict: Feature dictionary with temporal, motion, behavioral, spatial, 
+                  context features and combined 32-dimensional vector
         """
         try:
             recorder_file = f"{os.getenv('SCENARIO_RUNNER_ROOT', './')}/{log_file}"
@@ -57,10 +57,10 @@ class FeatureExtractor:
             # Initialize feature dictionary
             features = {
                 'temporal_features': [],
+                'motion_features': [],
                 'behavioral_features': [],
                 'spatial_features': [],
-                'speed_features': [],
-                'traffic_features': [],
+                'context_features': [],
                 'combined_vector': []
             }
             
@@ -122,24 +122,21 @@ class FeatureExtractor:
             
             features['spatial_features'] = self._extract_spatial_features(positions)
             
-            features['speed_features'] = self._extract_speed_features(speeds, accelerations)
+            features['motion_features'] = self._extract_motion_features(speeds, accelerations)
             
             # Traffic context
             vehicle_ids = log.get_actor_ids_with_type_id("vehicle.*")
             traffic_count = len([vid for vid in vehicle_ids if vid != ego_id])
-            features['traffic_features'] = [
-                traffic_count,                    # Traffic vehicle count
-                min(traffic_count, 10),          # Capped traffic complexity
-                1 if traffic_count > 0 else 0    # Traffic presence indicator
-            ]
             
-            # Create combined 37-dimensional vector
+            features['context_features'] = self._extract_context_features(positions, traffic_count)
+            
+            # Create combined 32-dimensional vector
             features['combined_vector'] = (
                 features['temporal_features'] + 
+                features['motion_features'] + 
                 features['behavioral_features'] + 
                 features['spatial_features'] + 
-                features['speed_features'] + 
-                features['traffic_features']
+                features['context_features']
             )
             
             return features
@@ -168,27 +165,46 @@ class FeatureExtractor:
             return 6  # Idle
     
     def _extract_temporal_features(self, speeds, accelerations, frame_count):
-        """Extract temporal characteristics (6 features)."""
+        """Extract temporal characteristics (4 features)."""
         if not speeds:
-            return [0] * 6
+            return [0] * 4
         
         duration = frame_count * 0.05  # Assuming 20 FPS
-        speed_changes = sum(1 for i in range(1, len(speeds)) 
-                           if abs(speeds[i] - speeds[i-1]) > 1.0)
+        dynamic_events = (
+            sum(1 for i in range(1, len(speeds)) if abs(speeds[i] - speeds[i-1]) > 1.0) +
+            len([a for a in accelerations if abs(a) > 2.5])
+        )
         
         return [
             duration,                                           # 1. Duration (seconds)
-            len(speeds),                                        # 2. Frame count
-            speed_changes,                                      # 3. Speed changes count
-            speed_changes / len(speeds) if speeds else 0,       # 4. Speed change ratio
-            np.std(speeds) if len(speeds) > 1 else 0,          # 5. Speed variability (std)
-            len([a for a in accelerations if abs(a) > 2.0])    # 6. Significant accelerations count
+            frame_count,                                        # 2. Frame count
+            dynamic_events / duration if duration > 0 else 0,   # 3. Event frequency (events/sec)
+            dynamic_events / frame_count if frame_count > 0 else 0  # 4. Temporal density (events/frame)
+        ]
+    
+    def _extract_motion_features(self, speeds, accelerations):
+        """Extract motion characteristics (8 features)."""
+        if not speeds:
+            return [0] * 8
+        
+        speeds_array = np.array(speeds)
+        acc_array = np.array(accelerations) if accelerations else np.array([0])
+        
+        return [
+            np.mean(speeds_array),                             # 5. Mean speed
+            np.std(speeds_array),                              # 6. Speed standard deviation
+            np.min(speeds_array),                              # 7. Minimum speed
+            np.max(speeds_array),                              # 8. Maximum speed
+            np.max(speeds_array) - np.min(speeds_array),       # 9. Speed range
+            np.mean(acc_array),                                # 10. Mean acceleration
+            np.std(acc_array),                                 # 11. Acceleration standard deviation
+            len([a for a in accelerations if abs(a) > 2.5])   # 12. Dynamic events count (unified threshold)
         ]
     
     def _extract_behavioral_features(self, behaviors, steering_angles):
-        """Extract behavioral pattern features (10 features)."""
+        """Extract behavioral pattern features (8 features)."""
         if not behaviors:
-            return [0] * 10
+            return [0] * 8
         
         behavior_counts = Counter(behaviors)
         behavior_transitions = len(set(zip(behaviors[:-1], behaviors[1:]))) if len(behaviors) > 1 else 0
@@ -197,16 +213,14 @@ class FeatureExtractor:
         max_steer = max([abs(s) for s in steering_angles]) if steering_angles else 0
         
         return [
-            behavior_counts.get(0, 0),                          # 7. Stop events count
-            behavior_counts.get(1, 0),                          # 8. Acceleration events count
-            behavior_counts.get(2, 0),                          # 9. Deceleration events count
-            behavior_counts.get(3, 0) + behavior_counts.get(4, 0),  # 10. Turn maneuvers count
-            behavior_counts.get(5, 0) + behavior_counts.get(6, 0),  # 11. Cruise behavior count
-            behavior_transitions,                               # 12. Behavior transitions count
-            len(set(behaviors)),                                # 13. Unique behaviors count
-            avg_steer,                                          # 14. Average steering magnitude
-            max_steer,                                          # 15. Maximum steering magnitude
-            len(behaviors)                                      # 16. Total behavior events count
+            behavior_counts.get(0, 0),                          # 13. Stop events count
+            behavior_counts.get(1, 0),                          # 14. Acceleration events count
+            behavior_counts.get(2, 0),                          # 15. Deceleration events count
+            behavior_counts.get(3, 0) + behavior_counts.get(4, 0),  # 16. Turn maneuvers count
+            behavior_counts.get(5, 0) + behavior_counts.get(6, 0),  # 17. Cruise behavior count
+            behavior_transitions,                               # 18. Behavior transitions count
+            avg_steer,                                          # 19. Average steering magnitude
+            max_steer                                           # 20. Maximum steering magnitude
         ]
     
     def _extract_spatial_features(self, positions):
@@ -249,25 +263,25 @@ class FeatureExtractor:
             direction_changes / len(positions) if positions else 0  # 24. Curvature density
         ]
     
-    def _extract_speed_features(self, speeds, accelerations):
-        """Extract speed profile characteristics (10 features)."""
-        if not speeds:
-            return [0] * 10
+    def _extract_context_features(self, positions, traffic_count):
+        """Extract environmental context features (4 features)."""
+        # Calculate spatial area for traffic density
+        if len(positions) >= 2:
+            xs = [p[0] for p in positions]
+            ys = [p[1] for p in positions]
+            bbox_area = (max(xs) - min(xs)) * (max(ys) - min(ys))
+            traffic_density = traffic_count / max(bbox_area, 1) if bbox_area > 0 else 0
+        else:
+            traffic_density = 0
         
-        speeds_array = np.array(speeds)
-        acc_array = np.array(accelerations) if accelerations else np.array([0])
+        # Simple complexity score combining spatial and traffic factors
+        complexity_score = min(10, traffic_count + len(positions) / 100)
         
         return [
-            np.mean(speeds_array),                             # 25. Mean speed
-            np.std(speeds_array),                              # 26. Speed standard deviation
-            np.min(speeds_array),                              # 27. Minimum speed
-            np.max(speeds_array),                              # 28. Maximum speed
-            np.median(speeds_array),                           # 29. Median speed
-            np.percentile(speeds_array, 75) - np.percentile(speeds_array, 25),  # 30. Speed IQR
-            np.mean(acc_array),                                # 31. Mean acceleration
-            np.std(acc_array),                                 # 32. Acceleration standard deviation
-            len([s for s in speeds if s > 10]),               # 33. High speed events count
-            len([a for a in accelerations if abs(a) > 3])     # 34. Hard acceleration/deceleration count
+            traffic_count,                                     # 29. Traffic count
+            traffic_density,                                   # 30. Traffic density (vehicles/area)  
+            1 if traffic_count > 0 else 0,                     # 31. Traffic presence indicator
+            complexity_score                                   # 32. Scenario complexity score
         ]
 
 

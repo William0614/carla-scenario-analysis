@@ -19,7 +19,7 @@ A comprehensive toolkit for analyzing similarity between CARLA simulation scenar
 
 ### 🔬 Key Capabilities
 
-- **37-dimensional feature extraction** from CARLA scenario logs
+- **32-dimensional feature extraction** from CARLA scenario logs
 - **Dual ground truth validation**: Basic (filename-based) + Multi-dimensional (behavioral)
 - **3 categories of similarity metrics**: Distance-based, Sequence-based, Set-based  
 - **Comprehensive evaluation framework** for metric validation
@@ -33,7 +33,7 @@ A comprehensive toolkit for analyzing similarity between CARLA simulation scenar
 carla-scenario-analysis/
 ├── carla_similarity/              # Main framework module
 │   ├── __init__.py               # Module interface
-│   ├── feature_extraction.py     # 37-dimensional feature extractor
+│   ├── feature_extraction.py     # 32-dimensional feature extractor
 │   ├── similarity_metrics.py     # All similarity metric implementations
 │   ├── ground_truth.py          # Basic & multi-dimensional ground truth
 │   ├── evaluation.py            # Comprehensive evaluation framework
@@ -41,7 +41,7 @@ carla-scenario-analysis/
 ├── examples/                     # Usage examples
 │   └── example_usage.py         # Framework usage demonstrations
 ├── 📄 README.md                  # This file
-├── 📄 FEATURE_EXTRACTION_METHODOLOGY.md  # Detailed 37D feature engineering guide
+├── 📄 FEATURE_EXTRACTION_METHODOLOGY.md  # Detailed 32D feature engineering guide
 ├── 📄 requirements.txt           # Python dependencies
 └── 📄 [Research Documentation]   # Additional methodology and results files
 ```
@@ -73,7 +73,7 @@ carla-scenario-analysis/
 ### CLI Usage
 
 ```bash
-# Extract 37-dimensional features from log files
+# Extract 32-dimensional features from log files
 python carla_similarity/main.py extract-features /path/to/log/files
 
 # Generate basic ground truth (filename-based)
@@ -113,27 +113,28 @@ results = evaluator.evaluate_all_metrics(features, multi_pairs)
 
 ---
 
-## 📊 Feature Extraction (37 Dimensions)
+## 📊 Feature Extraction (32 Dimensions)
 
-Our framework extracts a comprehensive 37-dimensional feature vector from each CARLA scenario log, carefully engineered to capture all essential aspects of driving scenarios for robust similarity analysis.
+Our framework extracts a streamlined 32-dimensional feature vector from each CARLA scenario log, carefully engineered to capture all essential aspects of driving scenarios without redundancy or conceptual overlap.
 
-### Temporal Features (6D)
+### Temporal Features (4D)
 - **Duration**: Total scenario time length
 - **Frame Count**: Recording resolution indicator  
-- **Speed Changes Count**: Dynamic behavior frequency
-- **Speed Change Ratio**: Normalized dynamism measure
-- **Speed Variability**: Consistency vs. variance in driving
-- **Significant Accelerations**: Emergency/aggressive maneuvers
+- **Event Frequency**: Dynamic events per second (temporal rate)
+- **Temporal Density**: Events per frame (recording density)
 
-### Behavioral Features (10D)  
+### Motion Features (8D)  
+- **Speed Statistics**: Mean, standard deviation, min, max, and range
+- **Acceleration Analysis**: Mean and standard deviation of acceleration values
+- **Dynamic Events**: Unified threshold (2.5 m/s²) for significant speed/acceleration changes
+
+### Behavioral Features (8D)  
 - **Stop Events**: Traffic lights, intersections, congestion
 - **Acceleration/Deceleration Events**: Merging, braking patterns
 - **Turn Maneuvers**: Lane changes, navigation complexity
 - **Cruise Behavior**: Highway driving, steady flow periods
 - **Behavior Transitions**: Scenario complexity measure
-- **Unique Behaviors**: Scenario diversity indicator
 - **Steering Patterns**: Average and maximum steering intensity
-- **Total Behavior Events**: Overall activity level
 
 ### Spatial Features (8D)
 - **Path Length**: Total distance traveled
@@ -143,16 +144,11 @@ Our framework extracts a comprehensive 37-dimensional feature vector from each C
 - **Direction Changes**: Route complexity measure
 - **Curvature Density**: Normalized spatial complexity
 
-### Speed Features (10D)
-- **Statistical Measures**: Min, max, mean, median, standard deviation
-- **Distribution Analysis**: Interquartile range (75th - 25th percentile) for robustness  
-- **Acceleration Analysis**: Mean and standard deviation of acceleration values
-- **Event Detection**: High speed events (>10 m/s) and hard acceleration/deceleration (>3 m/s²)
-
-### Traffic Features (3D)
-- **Vehicle Count**: Traffic density measure
-- **Traffic Complexity**: Interaction difficulty score (capped)
-- **Traffic Presence**: Binary isolated vs. multi-vehicle indicator
+### Context Features (4D)
+- **Traffic Count**: Number of other vehicles in scenario
+- **Traffic Density**: Vehicles per spatial area (normalized measure)
+- **Traffic Presence**: Binary isolated vs. multi-vehicle indicator  
+- **Scenario Complexity**: Combined spatial and traffic complexity score
 
 > **📖 Detailed Methodology**: For complete extraction algorithms, validation methods, and engineering rationale, see [`FEATURE_EXTRACTION_METHODOLOGY.md`](FEATURE_EXTRACTION_METHODOLOGY.md).
 
@@ -175,7 +171,7 @@ Our framework extracts a comprehensive 37-dimensional feature vector from each C
 ## � API Reference
 
 ### FeatureExtractor
-Extracts 37-dimensional feature vectors from CARLA log files.
+Extracts 32-dimensional feature vectors from CARLA log files.
 
 ### SimilarityMetrics
 - **DistanceBasedMetrics**: Euclidean, Manhattan, Cosine, Chebyshev
