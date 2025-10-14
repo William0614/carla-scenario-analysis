@@ -2,9 +2,9 @@
 
 ## Executive Summary
 
-This report documents the development and validation of a multi-dimensional ground truth methodology for CARLA scenario similarity analysis. The approach addresses critical limitations of existing filename-based similarity assessment by incorporating behavioral, spatial, traffic, and contextual dimensions. Our corrected methodology achieves a **22.3% similarity rate** with improved discrimination between genuinely similar and dissimilar driving scenarios.
+This report documents the development and validation of a refined multi-dimensional ground truth methodology for CARLA scenario similarity analysis. The updated approach leverages our improved 32-dimensional feature architecture with five complementary similarity dimensions: temporal, motion, behavioral, spatial, and contextual analysis. This methodology addresses critical limitations of filename-based similarity assessment and provides enhanced discrimination between genuinely similar and dissimilar driving scenarios.
 
-**Key Achievement**: Replaced simplistic filename-based ground truth (limited to geographic clustering) with comprehensive behavioral analysis that captures actual driving patterns, spatial trajectories, traffic complexity, and contextual factors.
+**Key Achievement**: Evolved from 4-dimensional to 5-dimensional analysis aligned with refined 32D features, eliminating redundancy while maintaining comprehensive scenario characterization through temporal patterns, motion dynamics, behavioral sequences, spatial geometry, and environmental context.
 
 ---
 
@@ -18,35 +18,52 @@ The original CARLA scenario similarity analysis relied exclusively on filename p
 - **No behavioral analysis**: Actual driving patterns, speeds, and maneuvers were ignored
 - **Limited discrimination**: Binary similarity based solely on location names
 
-### 1.2 Research Objective
-Develop a robust, multi-dimensional ground truth that captures:
-1. **Behavioral similarity** - driving patterns, speed profiles, control actions
-2. **Spatial similarity** - path geometry, trajectory shapes, navigation complexity  
-3. **Traffic similarity** - vehicle density, interaction complexity
-4. **Contextual similarity** - geographic region, scenario family classification
+### 1.2 Research Evolution
+The methodology has evolved through multiple iterations:
+
+**Original (4D)**: Behavioral, Spatial, Traffic, Contextual dimensions
+**Refined (5D)**: Temporal, Motion, Behavioral, Spatial, Context dimensions
+
+### 1.3 Current Objective (Updated)
+Develop a refined, five-dimensional ground truth aligned with 32D feature architecture:
+1. **Temporal similarity** - time-based patterns, event frequencies, rates
+2. **Motion similarity** - speed profiles, acceleration patterns, dynamics  
+3. **Behavioral similarity** - driving patterns, maneuvers, control actions
+4. **Spatial similarity** - path geometry, trajectory shapes, navigation complexity
+5. **Context similarity** - traffic density, environmental complexity, interactions
 
 ---
 
-## 2. Methodology
+## 2. Refined Methodology (32D Architecture)
 
 ### 2.1 Multi-Dimensional Framework
 
-Our approach combines four complementary similarity dimensions with carefully tuned weights:
+Our refined approach combines five complementary similarity dimensions aligned with the 32D feature architecture:
 
 | Dimension | Weight | Focus | Rationale |
 |-----------|---------|-------|-----------|
-| **Behavioral** | 40% | Action sequences, speed profiles, control patterns | Most critical for AV testing - captures how vehicles actually behave |
-| **Spatial** | 30% | Path geometry, trajectory shapes, curvature | Critical for navigation challenges and route complexity |
-| **Traffic** | 20% | Vehicle counts, density patterns | Important for interaction complexity and scenario difficulty |
-| **Contextual** | 10% | Geographic region, scenario family | Useful but secondary - provides environment context |
+| **Behavioral** | 30% | Driving patterns, maneuvers, steering behavior | Primary for AV testing - captures actual driving behaviors |
+| **Motion** | 25% | Speed profiles, acceleration patterns, dynamics | Critical for understanding vehicle dynamics and safety |
+| **Spatial** | 20% | Path geometry, trajectory shapes, curvature | Important for navigation challenges and route complexity |
+| **Temporal** | 15% | Time-based patterns, event frequencies, rates | Captures scenario pacing and temporal dynamics |
+| **Context** | 10% | Traffic density, environmental complexity | Provides scenario difficulty and interaction context |
 
-### 2.2 Feature Extraction Pipeline
+### 2.2 Feature Extraction Pipeline (Updated for 32D Architecture)
 
-#### 2.2.1 Behavioral Features
-- **Speed Profile**: Frame-by-frame velocity analysis using `log.get_actor_velocity()`
-- **Action Classification**: Driving actions (STOP, BRAKE, ACCELERATE, TURN_LEFT/RIGHT, CRUISE)
-- **Control Patterns**: Throttle, brake, steering input analysis
-- **Statistical Measures**: Average speed, speed variance, action diversity
+#### 2.2.1 Temporal Features (4D)
+- **Duration & Frame Analysis**: Scenario length and recording resolution
+- **Event Frequency**: Dynamic events per second for temporal pacing
+- **Temporal Density**: Events per frame for scenario richness
+
+#### 2.2.2 Motion Features (8D) 
+- **Speed Statistics**: Mean, std, min, max, range for velocity profiles
+- **Acceleration Analysis**: Mean and variability of acceleration patterns
+- **Dynamic Events**: Unified threshold (2.5 m/s²) for significant maneuvers
+
+#### 2.2.3 Behavioral Features (8D)
+- **Action Classification**: Driving actions (STOP, ACCELERATE, DECELERATE, TURN, CRUISE)
+- **Behavior Transitions**: State changes indicating scenario complexity
+- **Control Patterns**: Average and maximum steering intensity analysis
 
 ```python
 # Action sequence similarity using edit distance
@@ -56,38 +73,32 @@ action_sim = 1 - (edit_distance(seq1, seq2) / max(len(seq1), len(seq2)))
 speed_sim = pearsonr(speed1[:min_len], speed2[:min_len])
 ```
 
-#### 2.2.2 Spatial Features
-- **Path Coordinates**: Vehicle trajectory using `log.get_actor_transform()`
-- **Geometric Analysis**: Path length, displacement, bounding box dimensions
-- **Curvature Analysis**: Turning complexity using three-point angle calculations
-- **Trajectory Comparison**: Distance-based path similarity with length normalization
+#### 2.2.4 Spatial Features (8D)
+- **Path Geometry**: Total length, displacement, tortuosity ratio
+- **Bounding Box Analysis**: Width, height, area of spatial coverage  
+- **Direction Analysis**: Heading changes and curvature density
+- **Trajectory Comparison**: Path similarity based on geometric characteristics
 
 ```python
-# Tiered similarity based on actual distances
-if avg_distance <= 10.0 and max_distance <= 20.0:      # Very close paths
-    similarity = 0.95
-elif avg_distance <= 25.0 and max_distance <= 50.0:    # Close paths  
-    similarity = 0.80
-# ... (additional tiers)
+# Multi-aspect spatial similarity calculation
+path_length_sim = 1 - abs(spatial1[0] - spatial2[0]) / max(spatial1[0], spatial2[0], 1)
+displacement_sim = 1 - abs(spatial1[1] - spatial2[1]) / max(spatial1[1], spatial2[1], 1) 
+tortuosity_sim = 1 - abs(spatial1[2] - spatial2[2]) / max(spatial1[2], spatial2[2], 1)
+spatial_similarity = np.mean([path_length_sim, displacement_sim, tortuosity_sim])
 ```
 
-#### 2.2.3 Traffic Features
-- **Vehicle Counting**: Frame-by-frame active vehicle analysis using `log.get_actor_transforms_at_frame()`
-- **Density Statistics**: Average, maximum, variance of vehicle counts
-- **Temporal Patterns**: Traffic complexity over time
+#### 2.2.5 Context Features (4D)
+- **Traffic Analysis**: Vehicle count and density calculations
+- **Environmental Context**: Traffic presence indicators
+- **Complexity Scoring**: Combined spatial and traffic complexity measures
 
 ```python
-# Percentage-based traffic similarity with aggressive scaling
-if percentage_diff <= 0.05:      # Within 5%
-    return 0.95
-elif percentage_diff <= 0.10:    # Within 10%
-    return 0.85
-# ... (tiered approach)
+# Enhanced context similarity with density normalization
+traffic_count_sim = 1.0 - (traffic_diff / self.thresholds['traffic_diff'])
+density_sim = 1 - abs(context1[1] - context2[1]) / max(context1[1], context2[1], 1)
+complexity_sim = 1 - abs(context1[3] - context2[3]) / max(context1[3], context2[3], 1)
+context_similarity = np.mean([traffic_count_sim, density_sim, complexity_sim])
 ```
-
-#### 2.2.4 Contextual Features
-- **Geographic Classification**: Country and city extraction from filenames
-- **Scenario Family**: Intersection, highway, urban classification
 - **Environment Context**: Location-based similarity assessment
 
 ### 2.3 Similarity Calculation Methods
