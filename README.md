@@ -33,7 +33,7 @@ Once the features are extracted, two separate processor scripts analyze the gene
 #### Narrative Similarity (`sequence_similarity.py`)
 - Loads the `action_sequence` from all `.json` files
 - Computes a complete pairwise similarity matrix using normalized Levenshtein (Edit) Distance
-- Result: Similarity score between -1 and 1 for every pair of scenarios
+- Result: Similarity score between 0 (completely different) and 1 (identical) for every pair of scenarios
 - Saves results to `similarity_results/sequence_similarity_matrix.csv`
 
 ---
@@ -181,7 +181,7 @@ The script generates the following output:
 
 ### Similarity Matrices (`similarity_results/`)
 - `gower_similarity_matrix.csv`: Holistic feature similarity (range: 0-1)
-- `sequence_similarity_matrix.csv`: Action sequence similarity (range: -1 to 1)
+- `sequence_similarity_matrix.csv`: Action sequence similarity (range: 0-1)
 - `README.md`: Documentation about the results
 
 Both similarity matrices are also printed to the console during execution.

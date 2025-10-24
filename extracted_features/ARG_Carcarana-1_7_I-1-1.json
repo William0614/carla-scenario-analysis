@@ -1,0 +1,37 @@
+{
+    "holistic_features": {
+        "map_name": "OpenDriveMap",
+        "duration": 30.54,
+        "total_distance": 241.71014116614057,
+        "mean_speed": 7.912646046222088,
+        "max_speed": 8.45230606605919,
+        "max_acceleration": 20.785871477723923,
+        "max_deceleration": 1.8953867757371654,
+        "mean_abs_jerk": 0.0,
+        "max_jerk": 0.0,
+        "mean_abs_curvature": 0.012959567280385633,
+        "max_curvature": 10.0,
+        "num_other_vehicles": 7,
+        "traffic_density": 0.0004489201900225667,
+        "collision_occurred": 0,
+        "traffic_presence": 1,
+        "stop_events_count": 0,
+        "accel_events_count": 3,
+        "decel_events_count": 3,
+        "turn_events_count": 119
+    },
+    "action_sequence": [
+        "ST",
+        "AC",
+        "CR",
+        "DC",
+        "CR",
+        "AC",
+        "CR",
+        "DC",
+        "CR",
+        "AC",
+        "CR",
+        "DC"
+    ]
+}

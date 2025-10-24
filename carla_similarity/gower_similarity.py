@@ -33,15 +33,25 @@ def calculate_gower_similarity_matrix(features_dir: str):
         or col in ['collision_occurred', 'traffic_presence']  # binary flags only
     ]
     
+    # Remove features with zero variance (they don't help distinguish scenarios)
+    zero_var_cols = [col for col in unified_df.columns 
+                     if unified_df[col].dtype in ['float64', 'int64'] 
+                     and unified_df[col].std() == 0]
+    
+    if zero_var_cols:
+        print(f"Removing zero-variance features: {zero_var_cols}")
+        unified_df = unified_df.drop(columns=zero_var_cols)
+    
     # Convert categorical columns to category dtype for proper handling
     for col in categorical_cols:
-        unified_df[col] = unified_df[col].astype('category')
+        if col in unified_df.columns:  # Make sure it wasn't dropped
+            unified_df[col] = unified_df[col].astype('category')
     
     # Create boolean array for categorical features (required by gower package)
     cat_features = [col in categorical_cols for col in unified_df.columns]
     
     print(f"\n--- Calculating Gower Distance Matrix for {len(unified_df)} scenarios ---")
-    print(f"Categorical features identified for Gower: {categorical_cols}")
+    print(f"Categorical features identified for Gower: {[col for col in unified_df.columns if col in categorical_cols]}")
     print(f"Numerical features: {[col for col in unified_df.columns if col not in categorical_cols]}")
 
     gower_dissimilarity = gower.gower_matrix(unified_df, cat_features=cat_features)

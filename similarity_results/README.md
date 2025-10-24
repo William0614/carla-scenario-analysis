@@ -14,7 +14,7 @@ This directory contains the similarity analysis results for CARLA scenario log f
 
 ### 2. `sequence_similarity_matrix.csv`
 - **Description**: Pairwise sequence (narrative) similarity matrix for all scenarios
-- **Range**: -1 to 1 (1 = most similar)
+- **Range**: 0 to 1 (1 = most similar, 0 = completely different)
 - **Method**: Normalized edit distance on symbolic action sequences
 - **Symbolic actions**: CR (Cruise), AC (Accelerate), DC (Decelerate), ST (Stop), LT (Left Turn), RT (Right Turn)
 

@@ -131,9 +131,18 @@ class SCTransFeatureExtractor:
         ego_df['speed'] = np.sqrt(ego_df['vel_x']**2 + ego_df['vel_y']**2)
         ego_df['long_accel'] = np.gradient(ego_df['speed'], ego_df.index)
         accel_mag = np.sqrt(ego_df['acc_x']**2 + ego_df['acc_y']**2)
-        smooth_accel = savgol_filter(accel_mag, window_length=min(5, len(accel_mag)), polyorder=2)
-        jerk_mag = np.gradient(smooth_accel, ego_df.index)
+        
+        # Calculate jerk with proper handling
+        if len(accel_mag) >= 5:
+            smooth_accel = savgol_filter(accel_mag, window_length=min(5, len(accel_mag)), polyorder=2)
+            jerk_mag = np.gradient(smooth_accel, ego_df.index)
+        else:
+            # For short sequences, use simple gradient
+            jerk_mag = np.gradient(accel_mag, ego_df.index)
+        
         curvature = self._calculate_curvature(ego_df['pos_x'], ego_df['pos_y'])
+        # Clip extreme curvature values to reasonable range (max 10 rad/m)
+        curvature = np.clip(curvature, -10, 10)
         ego_df['curvature'] = curvature
         # Use unwrap without period parameter for compatibility with older NumPy versions
         ego_df['yaw_rate'] = np.gradient(np.unwrap(np.radians(ego_df['yaw'])), ego_df.index)

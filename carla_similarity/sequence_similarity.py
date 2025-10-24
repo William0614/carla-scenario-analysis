@@ -39,9 +39,15 @@ def calculate_sequence_similarity_matrix(features_dir: str):
             seq1 = all_sequences[scenario_names[i]]
             seq2 = all_sequences[scenario_names[j]]
             
-            edit_distance = Levenshtein.distance("".join(seq1), "".join(seq2))
-            max_len = max(len(seq1), len(seq2))
+            # Join sequences to strings for Levenshtein distance
+            str1 = "".join(seq1)
+            str2 = "".join(seq2)
             
+            edit_distance = Levenshtein.distance(str1, str2)
+            # Use the maximum string length (not sequence length) for proper normalization
+            max_len = max(len(str1), len(str2))
+            
+            # Normalize to 0-1 range (1 = identical, 0 = completely different)
             score = 1.0 - (edit_distance / max_len) if max_len > 0 else 1.0
             similarity_matrix[i, j] = score
 

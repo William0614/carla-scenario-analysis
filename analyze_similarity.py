@@ -44,11 +44,8 @@ def find_combined_similar(target_scenario, gower_sim, seq_sim, top_n=10,
         gower_weight: Weight for Gower similarity (0-1)
         seq_weight: Weight for sequence similarity (0-1)
     """
-    # Normalize sequence similarity to 0-1 range
-    seq_norm = (seq_sim[target_scenario] + 1) / 2
-    
-    # Weighted combination
-    combined = gower_weight * gower_sim[target_scenario] + seq_weight * seq_norm
+    # Both metrics are now in 0-1 range, so direct weighted combination
+    combined = gower_weight * gower_sim[target_scenario] + seq_weight * seq_sim[target_scenario]
     
     print(f"\n=== Combined Similarity (Gower: {gower_weight}, Seq: {seq_weight}) ===")
     print(f"Target: {target_scenario}\n")
