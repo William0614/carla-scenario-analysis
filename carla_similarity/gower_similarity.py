@@ -26,19 +26,25 @@ def calculate_gower_similarity_matrix(features_dir: str):
     unified_df = pd.DataFrame.from_dict(all_features, orient='index')
     unified_df = unified_df.reindex(sorted(unified_df.columns), axis=1)
 
+    # Identify truly categorical columns (only map_name and binary flags)
     categorical_cols = [
         col for col in unified_df.columns 
-        if unified_df[col].dtype == 'object' 
-        or 'occurred' in col 
-        or 'presence' in col
-        or '_count' in col
+        if unified_df[col].dtype == 'object'  # map_name
+        or col in ['collision_occurred', 'traffic_presence']  # binary flags only
     ]
-    categorical_flags = {col: True for col in categorical_cols}
+    
+    # Convert categorical columns to category dtype for proper handling
+    for col in categorical_cols:
+        unified_df[col] = unified_df[col].astype('category')
+    
+    # Create boolean array for categorical features (required by gower package)
+    cat_features = [col in categorical_cols for col in unified_df.columns]
     
     print(f"\n--- Calculating Gower Distance Matrix for {len(unified_df)} scenarios ---")
     print(f"Categorical features identified for Gower: {categorical_cols}")
+    print(f"Numerical features: {[col for col in unified_df.columns if col not in categorical_cols]}")
 
-    gower_dissimilarity = gower.gower_matrix(unified_df, cat_features=categorical_flags)
+    gower_dissimilarity = gower.gower_matrix(unified_df, cat_features=cat_features)
     gower_similarity = 1 - gower_dissimilarity
     
     return pd.DataFrame(gower_similarity, index=unified_df.index, columns=unified_df.index)
