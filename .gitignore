@@ -44,13 +44,6 @@ Thumbs.db
 *.mp4
 *.avi
 
-# Analysis outputs
-scenario_reduction_analysis.json
-ego_action_sequence.txt
-movement_analysis_actor_*.png
-detailed_movement_analysis_actor_*.png
-distance_plot.png
-
 # Temporary files
 temp/
 tmp/
