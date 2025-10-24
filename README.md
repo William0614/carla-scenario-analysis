@@ -1,18 +1,14 @@
 # CARLA Scenario Similarity Analysis
 
-This project provides a robust framework for analyzing and comparing CARLA driving scenarios from log files, specifically tailored for datasets like SCTrans. The methodology is grounded in a multi-modal approach, representing each scenario in two distinct ways to capture different aspects of similarity:
+Framework for analyzing and comparing CARLA driving scenarios from log files, specifically for datasets like SCTrans. The methodology is grounded in a multi-modal approach, representing each scenario in two distinct ways to capture different aspects of similarity:
 
-1. **Holistic Similarity**: A fixed-length feature vector that provides a comprehensive "fingerprint" of the scenario's overall characteristics. This is analyzed using Gower's Distance, which is ideal for mixed numerical and categorical data.
+1. **Holistic Similarity**: A fixed-length feature vector that provides a scenario's overall characteristics. This is analyzed using Gower's Distance, which is ideal for mixed numerical and categorical data.
 
-2. **Narrative Similarity**: A symbolic sequence of actions that represents the "story" of the driving behavior. This is analyzed using Levenshtein (Edit) Distance to compare how similarly two scenarios unfold over time.
-
-The entire pipeline is designed to be modular, reproducible, and suitable for academic research.
+2. **Narrative Similarity**: A symbolic sequence of actions that represents the driving behavior. This is analyzed using Levenshtein (Edit) Distance to compare how similarly two scenarios unfold over time.
 
 ---
 
 ## How It Works
-
-The analysis is performed in a two-stage pipeline orchestrated by `main.py`.
 
 ### Stage 1: Feature Extraction (`feature_extractor.py`)
 
