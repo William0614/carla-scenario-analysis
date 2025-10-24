@@ -100,13 +100,14 @@ class BasicGroundTruth:
 
 class MultiDimensionalGroundTruth:
     """
-    Multi-dimensional ground truth based on 4-dimensional behavioral analysis:
-    1. Behavioral similarity (LCS-based)
-    2. Spatial similarity  
-    3. Traffic similarity
-    4. Contextual similarity
+    Multi-dimensional ground truth based on 5-dimensional behavioral analysis:
+    1. Temporal similarity - time-based patterns and event rates
+    2. Motion similarity - speed, acceleration, and dynamics  
+    3. Behavioral similarity - driving patterns and maneuvers (LCS-based)
+    4. Spatial similarity - geometric and trajectory characteristics
+    5. Context similarity - traffic and environmental factors
     
-    This is the validated ground truth methodology from the research.
+    Updated to align with refined 32-dimensional feature architecture.
     """
     
     def __init__(self, similarity_threshold=0.6):
@@ -119,12 +120,13 @@ class MultiDimensionalGroundTruth:
         self.similarity_threshold = similarity_threshold
         self.lcs_metrics = SequenceBasedMetrics()
         
-        # Similarity calculation parameters (optimized from research)
+        # Similarity calculation parameters (updated for 32D architecture)
         self.weights = {
-            'behavioral': 0.4,   # Primary weight for behavioral patterns
-            'spatial': 0.25,     # Secondary weight for spatial patterns  
-            'traffic': 0.2,      # Moderate weight for traffic context
-            'contextual': 0.15   # Lower weight for contextual factors
+            'temporal': 0.15,    # Time-based patterns and event rates
+            'motion': 0.25,      # Speed, acceleration, dynamics (high impact)
+            'behavioral': 0.30,  # Primary weight for driving patterns
+            'spatial': 0.20,     # Geometric and trajectory characteristics  
+            'context': 0.10      # Environmental and traffic factors
         }
         
         # Thresholds for individual similarity dimensions
@@ -189,17 +191,20 @@ class MultiDimensionalGroundTruth:
         # Initialize dimension similarities
         dimensions = {}
         
-        # 1. Behavioral Similarity (LCS-based)
+        # 1. Temporal Similarity (time-based patterns)
+        dimensions['temporal'] = self._calculate_temporal_similarity(features1, features2)
+        
+        # 2. Motion Similarity (speed, acceleration, dynamics)
+        dimensions['motion'] = self._calculate_motion_similarity(features1, features2)
+        
+        # 3. Behavioral Similarity (LCS-based driving patterns)
         dimensions['behavioral'] = self._calculate_behavioral_similarity(features1, features2)
         
-        # 2. Spatial Similarity
+        # 4. Spatial Similarity (geometric characteristics)
         dimensions['spatial'] = self._calculate_spatial_similarity(features1, features2)
         
-        # 3. Traffic Similarity
-        dimensions['traffic'] = self._calculate_traffic_similarity(features1, features2)
-        
-        # 4. Contextual Similarity (duration, speed patterns)
-        dimensions['contextual'] = self._calculate_contextual_similarity(features1, features2)
+        # 5. Context Similarity (traffic and environment)
+        dimensions['context'] = self._calculate_context_similarity(features1, features2)
         
         # Calculate weighted overall similarity
         overall_similarity = sum(
@@ -234,22 +239,96 @@ class MultiDimensionalGroundTruth:
         # This is a simplified reconstruction - in practice, you'd store the original sequence
         sequence = []
         
-        # Add actions based on counts (simplified)
-        if len(behavioral_features) >= 10:
-            stops = int(behavioral_features[0])
-            accelerations = int(behavioral_features[1])
-            decelerations = int(behavioral_features[2])
-            turns = int(behavioral_features[3])
-            cruise = int(behavioral_features[4])
+        # Add actions based on counts (updated for 8D behavioral features)
+        if len(behavioral_features) >= 8:
+            stops = int(behavioral_features[0])          # Stop events
+            accelerations = int(behavioral_features[1])   # Acceleration events  
+            decelerations = int(behavioral_features[2])   # Deceleration events
+            turns = int(behavioral_features[3])          # Turn maneuvers
+            cruise = int(behavioral_features[4])         # Cruise periods
+            transitions = int(behavioral_features[5])    # Behavior transitions
             
-            # Create a representative sequence
+            # Create a representative sequence based on event counts
             sequence.extend([0] * min(stops, 5))        # Stops
             sequence.extend([1] * min(accelerations, 5)) # Accelerations
             sequence.extend([2] * min(decelerations, 5)) # Decelerations
             sequence.extend([3] * min(turns, 5))         # Turns
             sequence.extend([5] * min(cruise, 5))        # Cruise
+            sequence.extend([6] * min(transitions, 3))   # Transitions (limited)
         
         return sequence
+    
+    def _calculate_temporal_similarity(self, features1, features2):
+        """Calculate temporal similarity based on time-based patterns."""
+        if not features1 or not features2:
+            return 0.0
+        
+        temporal1 = features1.get('temporal_features', [])
+        temporal2 = features2.get('temporal_features', [])
+        
+        if len(temporal1) < 4 or len(temporal2) < 4:
+            return 0.0
+        
+        similarities = []
+        
+        # Duration similarity (feature 0)
+        duration_diff = abs(temporal1[0] - temporal2[0])
+        if duration_diff <= self.thresholds['duration_diff']:
+            duration_sim = 1.0 - (duration_diff / self.thresholds['duration_diff'])
+            similarities.append(duration_sim)
+        
+        # Frame count ratio similarity (feature 1) 
+        frame_ratio1 = temporal1[1] / max(temporal1[0], 1)  # frames per second
+        frame_ratio2 = temporal2[1] / max(temporal2[0], 1)
+        frame_sim = 1 - abs(frame_ratio1 - frame_ratio2) / max(frame_ratio1, frame_ratio2, 1)
+        similarities.append(max(0.0, frame_sim))
+        
+        # Event frequency similarity (feature 2)
+        event_freq_sim = 1 - abs(temporal1[2] - temporal2[2]) / max(temporal1[2], temporal2[2], 1)
+        similarities.append(max(0.0, event_freq_sim))
+        
+        # Temporal density similarity (feature 3)
+        density_sim = 1 - abs(temporal1[3] - temporal2[3]) / max(temporal1[3], temporal2[3], 1)
+        similarities.append(max(0.0, density_sim))
+        
+        return np.mean(similarities) if similarities else 0.0
+    
+    def _calculate_motion_similarity(self, features1, features2):
+        """Calculate motion similarity based on speed and acceleration patterns."""
+        if not features1 or not features2:
+            return 0.0
+        
+        motion1 = features1.get('motion_features', [])
+        motion2 = features2.get('motion_features', [])
+        
+        if len(motion1) < 8 or len(motion2) < 8:
+            return 0.0
+        
+        similarities = []
+        
+        # Mean speed similarity (feature 0)
+        speed_diff = abs(motion1[0] - motion2[0])
+        if speed_diff <= self.thresholds['speed_diff']:
+            speed_sim = 1.0 - (speed_diff / self.thresholds['speed_diff'])
+            similarities.append(speed_sim)
+        
+        # Speed variability similarity (feature 1)
+        speed_std_sim = 1 - abs(motion1[1] - motion2[1]) / max(motion1[1], motion2[1], 1)
+        similarities.append(max(0.0, speed_std_sim))
+        
+        # Speed range similarity (features 2-4: min, max, range)
+        range_sim = 1 - abs(motion1[4] - motion2[4]) / max(motion1[4], motion2[4], 1)
+        similarities.append(max(0.0, range_sim))
+        
+        # Acceleration pattern similarity (features 5-6)
+        acc_mean_sim = 1 - abs(motion1[5] - motion2[5]) / max(abs(motion1[5]), abs(motion2[5]), 1)
+        similarities.append(max(0.0, acc_mean_sim))
+        
+        # Dynamic events similarity (feature 7)
+        dynamic_sim = 1 - abs(motion1[7] - motion2[7]) / max(motion1[7], motion2[7], 1)
+        similarities.append(max(0.0, dynamic_sim))
+        
+        return np.mean(similarities) if similarities else 0.0
     
     def _calculate_spatial_similarity(self, features1, features2):
         """Calculate spatial similarity based on path characteristics."""
@@ -272,51 +351,37 @@ class MultiDimensionalGroundTruth:
         
         return max(0.0, min(1.0, spatial_similarity))
     
-    def _calculate_traffic_similarity(self, features1, features2):
-        """Calculate traffic context similarity."""
+    def _calculate_context_similarity(self, features1, features2):
+        """Calculate context similarity (traffic and environmental factors)."""
         if not features1 or not features2:
             return 0.0
         
-        traffic1 = features1.get('traffic_features', [])
-        traffic2 = features2.get('traffic_features', [])
+        context1 = features1.get('context_features', [])
+        context2 = features2.get('context_features', [])
         
-        if len(traffic1) < 3 or len(traffic2) < 3:
+        if len(context1) < 4 or len(context2) < 4:
             return 0.0
-        
-        # Compare traffic vehicle counts
-        count1, count2 = traffic1[0], traffic2[0]
-        traffic_diff = abs(count1 - count2)
-        
-        if traffic_diff <= self.thresholds['traffic_diff']:
-            return 1.0 - (traffic_diff / self.thresholds['traffic_diff'])
-        else:
-            return 0.0
-    
-    def _calculate_contextual_similarity(self, features1, features2):
-        """Calculate contextual similarity (duration, speed patterns)."""
-        if not features1 or not features2:
-            return 0.0
-        
-        temporal1 = features1.get('temporal_features', [])
-        temporal2 = features2.get('temporal_features', [])
-        speed1 = features1.get('speed_features', [])
-        speed2 = features2.get('speed_features', [])
         
         similarities = []
         
-        # Duration similarity
-        if len(temporal1) >= 1 and len(temporal2) >= 1:
-            duration_diff = abs(temporal1[0] - temporal2[0])
-            if duration_diff <= self.thresholds['duration_diff']:
-                duration_sim = 1.0 - (duration_diff / self.thresholds['duration_diff'])
-                similarities.append(duration_sim)
+        # Traffic count similarity (feature 0)
+        count1, count2 = context1[0], context2[0]
+        traffic_diff = abs(count1 - count2)
+        if traffic_diff <= self.thresholds['traffic_diff']:
+            traffic_sim = 1.0 - (traffic_diff / self.thresholds['traffic_diff'])
+            similarities.append(traffic_sim)
         
-        # Speed similarity
-        if len(speed1) >= 1 and len(speed2) >= 1:
-            speed_diff = abs(speed1[0] - speed2[0])  # Mean speed
-            if speed_diff <= self.thresholds['speed_diff']:
-                speed_sim = 1.0 - (speed_diff / self.thresholds['speed_diff'])
-                similarities.append(speed_sim)
+        # Traffic density similarity (feature 1)
+        density_sim = 1 - abs(context1[1] - context2[1]) / max(context1[1], context2[1], 1)
+        similarities.append(max(0.0, density_sim))
+        
+        # Traffic presence similarity (feature 2) - binary match
+        presence_sim = 1.0 if context1[2] == context2[2] else 0.0
+        similarities.append(presence_sim)
+        
+        # Scenario complexity similarity (feature 3)
+        complexity_sim = 1 - abs(context1[3] - context2[3]) / max(context1[3], context2[3], 1)
+        similarities.append(max(0.0, complexity_sim))
         
         return np.mean(similarities) if similarities else 0.0
 

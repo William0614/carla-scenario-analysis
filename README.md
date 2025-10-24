@@ -12,7 +12,8 @@ A comprehensive toolkit for analyzing similarity between CARLA simulation scenar
 
 ### 🔬 Key Capabilities
 
-- **32-dimensional feature extraction** from CARLA scenario logs
+- **31-dimensional feature extraction** from CARLA scenario logs (temporal, motion, behavioral, spatial, context)
+- **Accurate timing measurements** using CARLA's get_elapsed_time() API instead of FPS assumptions
 - **Dual ground truth validation**: Basic (filename-based) + Multi-dimensional (behavioral)
 - **3 categories of similarity metrics**: Distance-based, Sequence-based, Set-based  
 - **Comprehensive evaluation framework** for metric validation
@@ -221,6 +222,7 @@ python examples/example_usage.py
 
 - **Python**: 3.8+
 - **CARLA**: 0.9.15 Python API
+- **Scenario Runner**: MetricsLog API
 - **NumPy**: Numerical computations
 - **Matplotlib**: Visualization
 - **SciPy**: Scientific computing (optional)

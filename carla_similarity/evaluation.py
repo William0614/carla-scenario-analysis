@@ -335,16 +335,16 @@ class SimilarityEvaluator:
             if spatial[2] > 1.5:  # Complex path
                 feature_set.add('complex_path')
         
-        # Convert speed features
-        speed = features.get('speed_features', [])
-        if len(speed) >= 10:
-            if speed[0] > 8.0:  # High mean speed
+        # Convert motion features
+        motion = features.get('motion_features', [])
+        if len(motion) >= 8:
+            if motion[0] > 8.0:  # High mean speed
                 feature_set.add('high_speed_scenario')
         
-        # Convert traffic features
-        traffic = features.get('traffic_features', [])
-        if len(traffic) >= 3:
-            if traffic[2] > 0:  # Traffic present
+        # Convert context features
+        context = features.get('context_features', [])
+        if len(context) >= 4:
+            if context[2] > 0:  # Traffic present
                 feature_set.add('traffic_present')
         
         return feature_set

@@ -20,14 +20,14 @@ from srunner.metrics.tools.metrics_log import MetricsLog
 
 class FeatureExtractor:
     """
-    Comprehensive 32-dimensional feature extraction from CARLA scenario logs.
+    Comprehensive 31-dimensional feature extraction from CARLA scenario logs.
     
     Feature Categories:
-        - Temporal Features (4 dimensions): Duration, timing patterns  
-    - Motion Features (8 dimensions): Speed, acceleration, and dynamics
-    - Behavioral Features (8 dimensions): Driving patterns, maneuvers
-    - Spatial Features (8 dimensions): Geographic movement, trajectories
-    - Context Features (4 dimensions): Traffic and environmental context
+        - Temporal Features (3 dimensions): Duration, frame count, temporal density
+        - Motion Features (8 dimensions): Speed, acceleration, and dynamics
+        - Behavioral Features (8 dimensions): Driving patterns, maneuvers
+        - Spatial Features (8 dimensions): Geographic movement, trajectories
+        - Context Features (4 dimensions): Traffic and environmental context
     """
     
     def __init__(self, carla_host='localhost', carla_port=2000):
@@ -37,14 +37,14 @@ class FeatureExtractor:
     
     def extract_features(self, log_file):
         """
-        Extract comprehensive 32-dimensional feature vector from a log file.
+        Extract comprehensive 31-dimensional feature vector from a log file.
         
         Args:
             log_file (str): Path to the CARLA log file
             
         Returns:
             dict: Feature dictionary with temporal, motion, behavioral, spatial, 
-                  context features and combined 32-dimensional vector
+                  context features and combined 31-dimensional vector
         """
         try:
             recorder_file = f"{os.getenv('SCENARIO_RUNNER_ROOT', './')}/{log_file}"
@@ -112,8 +112,9 @@ class FeatureExtractor:
                     continue
             
             # Extract feature vectors
+            total_frames = log.get_total_frame_count()
             features['temporal_features'] = self._extract_temporal_features(
-                speeds, accelerations, len(sample_frames)
+                speeds, accelerations, total_frames, log, start_frame, end_frame
             )
             
             features['behavioral_features'] = self._extract_behavioral_features(
@@ -130,7 +131,7 @@ class FeatureExtractor:
             
             features['context_features'] = self._extract_context_features(positions, traffic_count)
             
-            # Create combined 32-dimensional vector
+            # Create combined 31-dimensional vector
             features['combined_vector'] = (
                 features['temporal_features'] + 
                 features['motion_features'] + 
@@ -164,12 +165,13 @@ class FeatureExtractor:
         else:
             return 6  # Idle
     
-    def _extract_temporal_features(self, speeds, accelerations, frame_count):
-        """Extract temporal characteristics (4 features)."""
+    def _extract_temporal_features(self, speeds, accelerations, frame_count, log, start_frame, end_frame):
+        """Extract temporal characteristics (3 features)."""
         if not speeds:
-            return [0] * 4
+            return [0] * 3
         
-        duration = frame_count * 0.05  # Assuming 20 FPS
+        duration = log.get_elapsed_time(end_frame) - log.get_elapsed_time(start_frame)
+        
         dynamic_events = (
             sum(1 for i in range(1, len(speeds)) if abs(speeds[i] - speeds[i-1]) > 1.0) +
             len([a for a in accelerations if abs(a) > 2.5])
@@ -178,8 +180,7 @@ class FeatureExtractor:
         return [
             duration,                                           # 1. Duration (seconds)
             frame_count,                                        # 2. Frame count
-            dynamic_events / duration if duration > 0 else 0,   # 3. Event frequency (events/sec)
-            dynamic_events / frame_count if frame_count > 0 else 0  # 4. Temporal density (events/frame)
+            dynamic_events / frame_count if frame_count > 0 else 0  # 3. Temporal density (events/frame)
         ]
     
     def _extract_motion_features(self, speeds, accelerations):
@@ -191,14 +192,14 @@ class FeatureExtractor:
         acc_array = np.array(accelerations) if accelerations else np.array([0])
         
         return [
-            np.mean(speeds_array),                             # 5. Mean speed
-            np.std(speeds_array),                              # 6. Speed standard deviation
-            np.min(speeds_array),                              # 7. Minimum speed
-            np.max(speeds_array),                              # 8. Maximum speed
-            np.max(speeds_array) - np.min(speeds_array),       # 9. Speed range
-            np.mean(acc_array),                                # 10. Mean acceleration
-            np.std(acc_array),                                 # 11. Acceleration standard deviation
-            len([a for a in accelerations if abs(a) > 2.5])   # 12. Dynamic events count (unified threshold)
+            np.mean(speeds_array),                             # 4. Mean speed
+            np.std(speeds_array),                              # 5. Speed standard deviation
+            np.min(speeds_array),                              # 6. Minimum speed
+            np.max(speeds_array),                              # 7. Maximum speed
+            np.max(speeds_array) - np.min(speeds_array),       # 8. Speed range
+            np.mean(acc_array),                                # 9. Mean acceleration
+            np.std(acc_array),                                 # 10. Acceleration standard deviation
+            len([a for a in accelerations if abs(a) > 2.5])   # 11. Dynamic events count (unified threshold)
         ]
     
     def _extract_behavioral_features(self, behaviors, steering_angles):
@@ -213,14 +214,14 @@ class FeatureExtractor:
         max_steer = max([abs(s) for s in steering_angles]) if steering_angles else 0
         
         return [
-            behavior_counts.get(0, 0),                          # 13. Stop events count
-            behavior_counts.get(1, 0),                          # 14. Acceleration events count
-            behavior_counts.get(2, 0),                          # 15. Deceleration events count
-            behavior_counts.get(3, 0) + behavior_counts.get(4, 0),  # 16. Turn maneuvers count
-            behavior_counts.get(5, 0) + behavior_counts.get(6, 0),  # 17. Cruise behavior count
-            behavior_transitions,                               # 18. Behavior transitions count
-            avg_steer,                                          # 19. Average steering magnitude
-            max_steer                                           # 20. Maximum steering magnitude
+            behavior_counts.get(0, 0),                          # 12. Stop events count
+            behavior_counts.get(1, 0),                          # 13. Acceleration events count
+            behavior_counts.get(2, 0),                          # 14. Deceleration events count
+            behavior_counts.get(3, 0) + behavior_counts.get(4, 0),  # 15. Turn maneuvers count
+            behavior_counts.get(5, 0) + behavior_counts.get(6, 0),  # 16. Cruise behavior count
+            behavior_transitions,                               # 17. Behavior transitions count
+            avg_steer,                                          # 18. Average steering magnitude
+            max_steer                                           # 19. Maximum steering magnitude
         ]
     
     def _extract_spatial_features(self, positions):
@@ -253,14 +254,14 @@ class FeatureExtractor:
                 direction_changes += 1
         
         return [
-            path_length,                                        # 17. Total path length
-            total_displacement,                                 # 18. Total displacement
-            path_length / total_displacement if total_displacement > 0 else 1,  # 19. Path tortuosity ratio
-            bbox_width,                                         # 20. Bounding box width
-            bbox_height,                                        # 21. Bounding box height
-            bbox_width * bbox_height,                          # 22. Bounding box area
-            direction_changes,                                  # 23. Direction changes count
-            direction_changes / len(positions) if positions else 0  # 24. Curvature density
+            path_length,                                        # 20. Total path length
+            total_displacement,                                 # 21. Total displacement
+            path_length / total_displacement if total_displacement > 0 else 1,  # 22. Path tortuosity ratio
+            bbox_width,                                         # 23. Bounding box width
+            bbox_height,                                        # 24. Bounding box height
+            bbox_width * bbox_height,                          # 25. Bounding box area
+            direction_changes,                                  # 26. Direction changes count
+            direction_changes / len(positions) if positions else 0  # 27. Curvature density
         ]
     
     def _extract_context_features(self, positions, traffic_count):
@@ -278,10 +279,10 @@ class FeatureExtractor:
         complexity_score = min(10, traffic_count + len(positions) / 100)
         
         return [
-            traffic_count,                                     # 29. Traffic count
-            traffic_density,                                   # 30. Traffic density (vehicles/area)  
-            1 if traffic_count > 0 else 0,                     # 31. Traffic presence indicator
-            complexity_score                                   # 32. Scenario complexity score
+            traffic_count,                                     # 28. Traffic count
+            traffic_density,                                   # 29. Traffic density (vehicles/area)  
+            1 if traffic_count > 0 else 0,                     # 30. Traffic presence indicator
+            complexity_score                                   # 31. Scenario complexity score
         ]
 
 
